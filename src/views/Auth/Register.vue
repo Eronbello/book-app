@@ -1,10 +1,13 @@
 <template lang="pug">
-  .login
-    .login__title Bem-vindo á Estante Virtual
-    .login__card
+  .register
+    .register__title Bem-vindo a Estante Virtual
+    .register__card
       .card__form
         img.card__logo(src="https://cdn3.vectorstock.com/i/1000x1000/60/97/abstract-book-logo-icon-vector-24016097.jpg")
-        h4 Login
+        h4 Register
+        .input-container
+          input#password.input(type='password', pattern='.+', required='')
+          label.label(for='password') Nome
         .input-container
           input#email.input(name="email" type='text', pattern='.+', required='')
           label.label(for='email') E-mail
@@ -12,12 +15,21 @@
           input#password.input(type='password', pattern='.+', required='')
           label.label(for='password') Senha
         //- .form__forgot Esqueceu sua senha?
-        button.form__action(@click="$router.push('/')") Entrar
+        button.form__action(@click="$router.push('/login')") Voltar
         button.form__action(@click="$router.push('/register')") Criar conta
 </template>
 
+<script>
+export default {
+  methods: {
+    goToRegister() {
+      this.$router.push("/register");
+    }
+  }
+};
+</script>
 <style lang="scss" scoped>
-.login {
+.register {
   width: 100vw;
   height: 100vh;
   background-image: url("../../assets/background-login.jpg");
@@ -26,7 +38,7 @@
   display: flex;
   justify-content: flex-end;
   position: relative;
-  .login__title {
+  .register__title {
     position: absolute;
     bottom: 2rem;
     left: 2rem;
@@ -34,7 +46,7 @@
     font-size: 2rem;
     font-weight: 300;
   }
-  .login__card {
+  .register__card {
     width: 500px;
     position: relative;
     background-color: white;

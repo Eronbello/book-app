@@ -55,9 +55,6 @@ input:focus + label {
   pointer-events: none;
 }
 button {
-  -webkit-appearance: none;
-   -moz-appearance: none;
-  appearance: none;
   cursor: pointer;
   height: 35px;
   border-radius: 200px;
