@@ -1,15 +1,10 @@
-import axios from "axios";
-
+import api from "../../../api/index";
 export default {
   setDataMyBooks: context => {
     return new Promise((resolve, reject) => {
       const id = sessionStorage.getItem("id");
-      axios
-        .get(`http://192.168.0.14:3000/api/v1/book?page=1&user_id=${id}`, {
-          headers: {
-            Authorization: sessionStorage.getItem("token")
-          }
-        })
+      api
+        .get(`/api/v1/book?page=1&user_id=${id}`)
         .then(response => {
           console.log(response.data.data);
           resolve(response.data.data);
