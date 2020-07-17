@@ -6,6 +6,7 @@
         img(:src="background")
       .content__details
         .details__author Author: {{ author }}
+        .details__author Category: {{ category }}
         .details__description Description: {{ description }}
     .modal__action
       button.modal__action--borrow(v-if="!userId") Borrow
@@ -15,7 +16,7 @@
 export default {
   props: {
     id: {
-      type: String,
+      type: Number,
       required: true
     },
     title: {
@@ -23,6 +24,10 @@ export default {
       required: true
     },
     author: {
+      type: String,
+      required: true
+    },
+    category: {
       type: String,
       required: true
     },

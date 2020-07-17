@@ -1,5 +1,5 @@
 export default {
   name: state => {
-    return state.data.name;
+    return state.data.name || "";
   }
 };

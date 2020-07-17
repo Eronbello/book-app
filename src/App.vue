@@ -5,7 +5,14 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
+  mounted() {
+    if (sessionStorage.getItem("token") && sessionStorage.getItem("id")) {
+      this.setUserByID();
+      this.setData();
+    }
+  },
   watch: {
     $route() {
       const token = sessionStorage.getItem("token");
@@ -17,6 +24,10 @@ export default {
         this.$router.push("/login");
       }
     }
+  },
+  methods: {
+    ...mapActions("books", ["setData"]),
+    ...mapActions("user", ["setUserByID"])
   }
 };
 </script>

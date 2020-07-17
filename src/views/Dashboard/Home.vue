@@ -5,15 +5,16 @@
         card(background="https://definicao.net/wp-content/uploads/2019/05/roxo-3.jpg" title="Available" url="api/available" @click="filterListBooks")
     .home__view
       modal(:open="modalStatus" @close="close")
-        modal-book(v-if="modalStatus" :title="bookSelected.title" :id="bookSelected.id" :description="bookSelected.description" :author="bookSelected.author" :background="bookSelected.background" @click="clicked")
+        modal-book(v-if="modalStatus" :title="bookSelected.title" :id="bookSelected.id" :description="bookSelected.description" :author="bookSelected.author" :background="bookSelected.background" :category="bookSelected.category" @click="clicked")
       h1.view__title  {{ title }}
       .view__content()
-        template(v-for="book in books")
-          card-book(:available="book.available" :title="book.title" :id="book.id" :description="book.description" :author="book.author" :background="book.background" @click="clicked")
+        template(v-for="book in all")
+          card-book(:available="book.available" :title="book.title" :category="book.category" :id="book.id" :description="book.description" :author="book.author" :background="book.background" @click="clicked")
 </template>
 
 <script>
 import { dragscroll } from "vue-dragscroll";
+import { mapGetters } from "vuex";
 export default {
   directives: {
     dragscroll
@@ -27,45 +28,7 @@ export default {
   data: () => ({
     title: "Top books",
     modalStatus: false,
-    bookSelected: {},
-    books: [
-      {
-        id: "1",
-        title: "The water cure",
-        author: "Joanne Ramos",
-        description: "Description",
-        available: true,
-        background:
-          "https://image.slidesharecdn.com/read-pdf-the-water-cure-full-download-191227170206/95/read-pdf-the-water-cure-full-download-1-638.jpg?cb=1577466155"
-      },
-      {
-        id: "2",
-        title: "The water cure",
-        author: "Joanne Ramos",
-        available: false,
-        description: "Description",
-        background:
-          "https://image.slidesharecdn.com/read-pdf-the-water-cure-full-download-191227170206/95/read-pdf-the-water-cure-full-download-1-638.jpg?cb=1577466155"
-      },
-      {
-        id: "3",
-        title: "The water cure",
-        author: "Joanne Ramos",
-        available: false,
-        description: "Description",
-        background:
-          "https://image.slidesharecdn.com/read-pdf-the-water-cure-full-download-191227170206/95/read-pdf-the-water-cure-full-download-1-638.jpg?cb=1577466155"
-      },
-      {
-        id: "4",
-        title: "The water cure",
-        author: "Joanne Ramos",
-        available: false,
-        description: "Description",
-        background:
-          "https://image.slidesharecdn.com/read-pdf-the-water-cure-full-download-191227170206/95/read-pdf-the-water-cure-full-download-1-638.jpg?cb=1577466155"
-      }
-    ]
+    bookSelected: {}
   }),
   mounted() {
     function scrollHorizontally(e) {
@@ -91,10 +54,12 @@ export default {
         .attachEvent("onmousewheel", scrollHorizontally);
     }
   },
+  computed: {
+    ...mapGetters("books", ["all"])
+  },
   methods: {
     clicked(book) {
       this.modalStatus = true;
-      console.log(book);
       this.bookSelected = book;
     },
     filterListBooks(filters) {

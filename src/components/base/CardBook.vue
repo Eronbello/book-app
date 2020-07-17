@@ -6,15 +6,16 @@
       .card_book__details
         .details__name {{ title }}
         .details__author {{ author }}
-        .details__description {{ description }}
-        button.details__button(:disabled="!available" @click="$emit('click', {id, title, author, description, background})") Borrow
+        .details__author {{ category }}
+        .details__description {{ shortDescription }}
+        button.details__button(:disabled="!available" @click="$emit('click', {id, title, author, description, background, category})") Borrow
 </template>
 
 <script>
 export default {
   props: {
     id: {
-      type: String,
+      type: Number,
       required: true
     },
     title: {
@@ -33,9 +34,18 @@ export default {
       type: String,
       required: true
     },
+    category: {
+      type: String,
+      required: true
+    },
     available: {
       type: Boolean,
-      required: true
+      required: false
+    }
+  },
+  computed: {
+    shortDescription() {
+      return this.description.substr(0, 25) + "...";
     }
   }
 };
