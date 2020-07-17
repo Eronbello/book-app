@@ -1,9 +1,9 @@
 <template lang="pug">
   .loans
-    alert(v-if="alertStatus" :message="message" @close="alertStatus = false")
+    alert(v-if="alertStatus" :message="message" @close="alertStatus = false" :color="color")
     .loans__view
       modal(:open="modalStatus" @close="close")
-        modal-book(v-if="modalStatus" :title="bookSelected.title" :id="bookSelected.id" :description="bookSelected.description" :author="bookSelected.author" :background="bookSelected.background" :category="bookSelected.category" @click="cancel" buttonText="Cancel")
+        modal-book(v-if="modalStatus" :loading="loading" :title="bookSelected.title" :id="bookSelected.id" :description="bookSelected.description" :author="bookSelected.author" :background="bookSelected.background" :category="bookSelected.category" @click="cancel" buttonText="Cancel")
       h1.view__title  {{ title }}
       .view__content()
         template(v-for="book in loans")
@@ -25,31 +25,13 @@ export default {
     Alert: () => import("../../components/base/Alert")
   },
   data: () => ({
-    title: "My loans",
+    title: "My library",
     modalStatus: false,
     bookSelected: {},
+    loading: false,
     message: "",
-    alertStatus: false,
-    books: [
-      {
-        id: "1",
-        title: "The water cure",
-        author: "Joanne Ramos",
-        description: "Description",
-        available: true,
-        background:
-          "https://image.slidesharecdn.com/read-pdf-the-water-cure-full-download-191227170206/95/read-pdf-the-water-cure-full-download-1-638.jpg?cb=1577466155"
-      },
-      {
-        id: "2",
-        title: "The water cure",
-        author: "Joanne Ramos",
-        available: false,
-        description: "Description",
-        background:
-          "https://image.slidesharecdn.com/read-pdf-the-water-cure-full-download-191227170206/95/read-pdf-the-water-cure-full-download-1-638.jpg?cb=1577466155"
-      }
-    ]
+    color: "",
+    alertStatus: false
   }),
   computed: {
     ...mapGetters("loans", ["loans"])
@@ -69,6 +51,7 @@ export default {
       this.modalStatus = false;
     },
     cancel(book) {
+      this.loading = true;
       const { id } = book;
       const user_id = null;
       this.$http
@@ -81,11 +64,17 @@ export default {
           this.setDataLoan();
           this.setDataMyBooks();
           this.modalStatus = false;
+          this.color = "Success";
           this.message = "Successfully canceled";
           this.alertStatus = true;
+          this.loading = false;
         })
-        .catch(error => {
-          console.log(error);
+        .catch(() => {
+          this.loading = false;
+          this.modalStatus = false;
+          this.color = "Error";
+          this.message = "Error canceled";
+          this.alertStatus = true;
         });
     }
   }
@@ -106,6 +95,9 @@ export default {
       color: #676767;
       margin: 1rem 1rem;
       font-size: 3rem;
+      @media (max-width: 600px) {
+        text-align: center;
+      }
     }
     .view__content {
       display: flex;
