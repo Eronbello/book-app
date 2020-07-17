@@ -1,17 +1,21 @@
 <template lang="pug">
   .home
+    alert(v-if="alertStatus" :message="message" @close="alertStatus = false" :color="color")
     .home__view
       modal(:open="modalStatus" @close="close")
-        modal-book(v-if="modalStatus" :borrowed_by="bookSelected.borrowed_by" :title="bookSelected.title" :id="bookSelected.id" :description="bookSelected.description" :author="bookSelected.author" :background="bookSelected.background" @click="cancel" :category="bookSelected.category" buttonText="Cancel")
-      h1.view__title  {{ title }}
+        modal-create-book(:loading="loading" @click="save" v-if="modalStatusCreate")
+        modal-book(v-if="modalStatus && !modalStatusCreate" :loading="loading" :borrowed_by="bookSelected.borrowed_by" :title="bookSelected.title" :id="bookSelected.id" :description="bookSelected.description" :author="bookSelected.author" :background="bookSelected.background" @click="cancel" :category="bookSelected.category" buttonText="Cancel")
+      .view__title  
+        h1 {{ title }}
+        button(@click="modalStatusCreate = true; modalStatus = true") ADD BOOK
       .view__content()
         template(v-for="book in mybooks")
-          card-book(:available="book.available" :borrowed_by="book.borrowed_by" :title="book.title" :id="book.id" :description="book.description" :author="book.author" :background="book.background" :category="book.category  " @click="clicked" buttonText="Details")
+          card-book(:available="book.available" :borrowed_by="book.borrowed_by" :title="book.title" :id="book.id" :description="book.description" :author="book.author" :background="book.background" :category="book.category  " @click="clicked" buttonText="Edit")
 </template>
 
 <script>
 import { dragscroll } from "vue-dragscroll";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 export default {
   directives: {
     dragscroll
@@ -20,50 +24,96 @@ export default {
     Card: () => import("../../components/base/Card"),
     CardBook: () => import("../../components/base/CardBook"),
     Modal: () => import("../../components/base/Modal"),
-    ModalBook: () => import("../../components/base/ModalBook")
+    ModalBook: () => import("../../components/base/ModalBook"),
+    ModalCreateBook: () => import("../../components/base/ModalCreateBook"),
+    Alert: () => import("../../components/base/Alert"),
+    BButton: () => import("../../components/base/Button")
   },
   data: () => ({
     title: "My books",
+    modalStatusCreate: false,
     modalStatus: false,
+    loading: false,
     bookSelected: {},
-    books: [
-      {
-        id: "1",
-        title: "The water cure",
-        author: "Joanne Ramos",
-        description: "Description",
-        available: true,
-        background:
-          "https://image.slidesharecdn.com/read-pdf-the-water-cure-full-download-191227170206/95/read-pdf-the-water-cure-full-download-1-638.jpg?cb=1577466155"
-      },
-      {
-        id: "2",
-        title: "The water cure",
-        author: "Joanne Ramos",
-        available: false,
-        description: "Description",
-        background:
-          "https://image.slidesharecdn.com/read-pdf-the-water-cure-full-download-191227170206/95/read-pdf-the-water-cure-full-download-1-638.jpg?cb=1577466155"
-      }
-    ]
+    message: "",
+    color: "",
+    alertStatus: false
   }),
   computed: {
     ...mapGetters("mybooks", ["mybooks"])
   },
   methods: {
+    ...mapActions("books", ["setData"]),
+    ...mapActions("loans", ["setDataLoan"]),
+    ...mapActions("mybooks", ["setDataMyBooks"]),
     clicked(book) {
       this.modalStatus = true;
+      console.log(book);
       this.bookSelected = book;
     },
     filterListBooks(filters) {
       this.title = filters.title;
     },
     close() {
+      this.modalStatusCreate = false;
       this.modalStatus = false;
     },
+    save(book) {
+      this.loading = true;
+      const user_id = sessionStorage.getItem("id");
+      const data = {
+        title: book.title,
+        author: book.author,
+        description: book.description,
+        category: book.category,
+        background: book.background,
+        available: false,
+        user_id: user_id
+      };
+      this.$http
+        .post("http://192.168.0.14:3000/api/v1/book", data)
+        .then(() => {
+          this.setData();
+          this.setDataLoan();
+          this.setDataMyBooks();
+          this.modalStatus = false;
+          this.color = "Success";
+          this.message = "Added successfully";
+          this.alertStatus = true;
+          this.loading = false;
+          this.modalStatusCreate = false;
+        })
+        .catch(() => {
+          this.loading = false;
+          this.modalStatus = false;
+          this.color = "Error";
+          this.message = "Error adding";
+          this.alertStatus = true;
+          this.modalStatusCreate = false;
+        });
+    },
     cancel(book) {
-      this.modalStatus = false;
-      console.log(book.id);
+      this.loading = true;
+      const { id } = book;
+      this.$http
+        .delete(`http://192.168.0.14:3000/api/v1/book/${id}`)
+        .then(() => {
+          this.setData();
+          this.setDataLoan();
+          this.setDataMyBooks();
+          this.modalStatus = false;
+          this.color = "Success";
+          this.message = "Successfully canceled";
+          this.alertStatus = true;
+          this.loading = false;
+        })
+        .catch(() => {
+          this.modalStatus = false;
+          this.color = "Error";
+          this.message = "Error canceled";
+          this.alertStatus = true;
+          this.loading = false;
+        });
     }
   }
 };
@@ -82,7 +132,22 @@ export default {
     .view__title {
       color: #676767;
       margin: 1rem 1rem;
-      font-size: 3rem;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      @media (max-width: 600px) {
+        flex-direction: column;
+        h1 {
+          margin-bottom: 15px;
+        }
+      }
+      h1 {
+        font-size: 3rem;
+      }
+      button {
+        width: 200px;
+      }
     }
     .view__content {
       display: flex;
