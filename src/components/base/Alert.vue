@@ -1,5 +1,5 @@
 <template lang="pug">
-.alert(:style="{ backgroundColor: color }")
+.alert(:style="{ backgroundColor: color === 'Success' ? '#26a69a' : '#ef6a6a'}")
   .alert__content(@click="controlVisibility")
     .content__action X
     .content_text {{ message }}
@@ -10,7 +10,7 @@ export default {
   props: {
     color: {
       type: String,
-      default: "#26a69a"
+      default: "Success"
     },
     message: {
       type: String,
