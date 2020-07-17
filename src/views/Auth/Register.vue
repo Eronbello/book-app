@@ -6,24 +6,44 @@
         img.card__logo(src="https://cdn3.vectorstock.com/i/1000x1000/60/97/abstract-book-logo-icon-vector-24016097.jpg")
         h4 Register
         .input-container
-          input#password.input(type='password', pattern='.+', required='')
-          label.label(for='password') Nome
+          input#name.input(v-model="name" type='name', pattern='.+', required='')
+          label.label(for='name') Nome
         .input-container
-          input#email.input(name="email" type='text', pattern='.+', required='')
+          input#email.input(v-model="email" name="email" type='text', pattern='.+', required='')
           label.label(for='email') E-mail
         .input-container
-          input#password.input(type='password', pattern='.+', required='')
+          input#password.input(v-model="password" type='password', pattern='.+', required='')
           label.label(for='password') Senha
         //- .form__forgot Esqueceu sua senha?
         button.form__action(@click="$router.push('/login')") Voltar
-        button.form__action(@click="$router.push('/register')") Criar conta
+        button.form__action(@click="handleCreateUser") Criar conta
 </template>
 
 <script>
 export default {
+  data: () => ({
+    name: "",
+    email: "",
+    password: ""
+  }),
   methods: {
-    goToRegister() {
-      this.$router.push("/register");
+    async handleCreateUser() {
+      const body = {
+        name: this.name,
+        email: this.email,
+        password: this.password
+      };
+      try {
+        const { data } = await this.$http.post(
+          "http://localhost:3000/api/v1/user",
+          body
+        );
+        if (data) {
+          this.$router.push("/login");
+        }
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 };

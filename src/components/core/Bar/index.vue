@@ -1,13 +1,17 @@
 <template lang="pug">
   .bar
-    h1.bar__name Eron Bello
+    h1.bar__name {{ name }}
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   data: () => ({
     search: "Procurar livro"
-  })
+  }),
+  computed: {
+    ...mapGetters("user", ["name"])
+  }
 };
 </script>
 <style lang="scss" scoped>
