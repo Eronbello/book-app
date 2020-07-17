@@ -38,6 +38,7 @@ export default {
         if (data.user) {
           this.setUserData(data.user);
           sessionStorage.setItem("token", data.token);
+          sessionStorage.setItem("id", data.user.id);
           this.$router.push("/");
         }
       } catch (error) {
