@@ -41,6 +41,9 @@ export default {
           this.setUserData(data.user);
           sessionStorage.setItem("token", data.token);
           sessionStorage.setItem("id", data.user.id);
+          this.$http.defaults.headers.common[
+            "Authorization"
+          ] = `Bearer ${sessionStorage.getItem("token")}`;
           this.setDataLoan();
           this.setData();
           this.setDataMyBooks();
