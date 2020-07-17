@@ -1,6 +1,6 @@
 <template lang="pug">
   .bar
-    h1.bar__name {{ name }}
+    h1.bar__name {{ name || ''}}
 </template>
 
 <script>

@@ -1,20 +1,22 @@
 <template lang="pug">
   .home
+    alert(v-if="alertStatus" :message="message" @close="alertStatus = false")
     .home__header
       #cards.home__list(v-dragscroll.y="false" v-dragscroll.x="true")
-        card(background="https://definicao.net/wp-content/uploads/2019/05/roxo-3.jpg" title="Available" url="api/available" @click="filterListBooks")
+        template(v-for="filter in filters")
+          card(:background="filter.background" title="filter.title" url="filter.url" @click="filterListBooks")
     .home__view
       modal(:open="modalStatus" @close="close")
-        modal-book(v-if="modalStatus" :title="bookSelected.title" :id="bookSelected.id" :description="bookSelected.description" :author="bookSelected.author" :background="bookSelected.background" :category="bookSelected.category" @click="clicked")
+        modal-book(v-if="modalStatus" :borrowed_by="bookSelected.borrowed_by" :title="bookSelected.title" :id="bookSelected.id" :description="bookSelected.description" :author="bookSelected.author" :background="bookSelected.background" :category="bookSelected.category" @click="borrow" buttonText="Borrow")
       h1.view__title  {{ title }}
       .view__content()
         template(v-for="book in all")
-          card-book(:available="book.available" :title="book.title" :category="book.category" :id="book.id" :description="book.description" :author="book.author" :background="book.background" @click="clicked")
+          card-book(:available="book.available" :borrowed_by="book.borrowed_by" :title="book.title" :category="book.category" :id="book.id" :description="book.description" :author="book.author" :background="book.background" @click="clicked" :buttonText="book.borrowed_by ? 'Details' : 'Borrow'")
 </template>
 
 <script>
 import { dragscroll } from "vue-dragscroll";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 export default {
   directives: {
     dragscroll
@@ -23,12 +25,95 @@ export default {
     Card: () => import("../../components/base/Card"),
     CardBook: () => import("../../components/base/CardBook"),
     Modal: () => import("../../components/base/Modal"),
-    ModalBook: () => import("../../components/base/ModalBook")
+    ModalBook: () => import("../../components/base/ModalBook"),
+    Alert: () => import("../../components/base/Alert")
   },
   data: () => ({
     title: "Top books",
     modalStatus: false,
-    bookSelected: {}
+    message: "",
+    alertStatus: false,
+    bookSelected: {},
+    filters: [
+      {
+        background:
+          "https://definicao.net/wp-content/uploads/2019/05/roxo-3.jpg",
+        title: "Available",
+        url: "api/available"
+      },
+      {
+        background:
+          "https://definicao.net/wp-content/uploads/2019/05/roxo-3.jpg",
+        title: "Available",
+        url: "api/available"
+      },
+      {
+        background:
+          "https://definicao.net/wp-content/uploads/2019/05/roxo-3.jpg",
+        title: "Available",
+        url: "api/available"
+      },
+      {
+        background:
+          "https://definicao.net/wp-content/uploads/2019/05/roxo-3.jpg",
+        title: "Available",
+        url: "api/available"
+      },
+      {
+        background:
+          "https://definicao.net/wp-content/uploads/2019/05/roxo-3.jpg",
+        title: "Available",
+        url: "api/available"
+      },
+      {
+        background:
+          "https://definicao.net/wp-content/uploads/2019/05/roxo-3.jpg",
+        title: "Available",
+        url: "api/available"
+      },
+      {
+        background:
+          "https://definicao.net/wp-content/uploads/2019/05/roxo-3.jpg",
+        title: "Available",
+        url: "api/available"
+      },
+      {
+        background:
+          "https://definicao.net/wp-content/uploads/2019/05/roxo-3.jpg",
+        title: "Available",
+        url: "api/available"
+      },
+      {
+        background:
+          "https://definicao.net/wp-content/uploads/2019/05/roxo-3.jpg",
+        title: "Available",
+        url: "api/available"
+      },
+      {
+        background:
+          "https://definicao.net/wp-content/uploads/2019/05/roxo-3.jpg",
+        title: "Available",
+        url: "api/available"
+      },
+      {
+        background:
+          "https://definicao.net/wp-content/uploads/2019/05/roxo-3.jpg",
+        title: "Available",
+        url: "api/available"
+      },
+      {
+        background:
+          "https://definicao.net/wp-content/uploads/2019/05/roxo-3.jpg",
+        title: "Available",
+        url: "api/available"
+      },
+      {
+        background:
+          "https://definicao.net/wp-content/uploads/2019/05/roxo-3.jpg",
+        title: "Available",
+        url: "api/available"
+      }
+    ]
   }),
   mounted() {
     function scrollHorizontally(e) {
@@ -58,12 +143,36 @@ export default {
     ...mapGetters("books", ["all"])
   },
   methods: {
+    ...mapActions("books", ["setData"]),
+    ...mapActions("loans", ["setDataLoan"]),
+    ...mapActions("mybooks", ["setDataMyBooks"]),
     clicked(book) {
       this.modalStatus = true;
       this.bookSelected = book;
     },
     filterListBooks(filters) {
       this.title = filters.title;
+    },
+    borrow(book) {
+      const { id } = book;
+      const user_id = sessionStorage.getItem("id");
+      this.$http
+        .post("http://192.168.0.14:3000/api/v1/loans", {
+          id,
+          user_id
+        })
+        .then(response => {
+          console.log(response);
+          this.setData();
+          this.setDataLoan();
+          this.setDataMyBooks();
+          this.modalStatus = false;
+          this.message = "Successfully added to your library";
+          this.alertStatus = true;
+        })
+        .catch(error => {
+          console.log(error);
+        });
     },
     close() {
       this.modalStatus = false;
@@ -74,6 +183,7 @@ export default {
 
 <style lang="scss" scoped>
 .home {
+  height: 100%;
   .home__header {
     .home__list {
       overflow: hidden;

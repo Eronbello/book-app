@@ -1,16 +1,18 @@
 <template lang="pug">
-  .home
-    .home__view
+  .loans
+    alert(v-if="alertStatus" :message="message" @close="alertStatus = false")
+    .loans__view
       modal(:open="modalStatus" @close="close")
-        modal-book(v-if="modalStatus" :title="bookSelected.title" :id="bookSelected.id" :description="bookSelected.description" :author="bookSelected.author" :background="bookSelected.background" @click="clicked")
+        modal-book(v-if="modalStatus" :title="bookSelected.title" :id="bookSelected.id" :description="bookSelected.description" :author="bookSelected.author" :background="bookSelected.background" :category="bookSelected.category" @click="cancel" buttonText="Cancel")
       h1.view__title  {{ title }}
       .view__content()
-        template(v-for="book in books")
-          card-book(:available="book.available" :title="book.title" :id="book.id" :description="book.description" :author="book.author" :background="book.background" @click="clicked")
+        template(v-for="book in loans")
+          card-book(:title="book.title" :id="book.id" :description="book.description" :author="book.author" :background="book.background" @click="clicked" :category="book.category" :borrowed_by="book.borrowed_by" buttonText="Details")
 </template>
 
 <script>
 import { dragscroll } from "vue-dragscroll";
+import { mapGetters, mapActions } from "vuex";
 export default {
   directives: {
     dragscroll
@@ -19,12 +21,15 @@ export default {
     Card: () => import("../../components/base/Card"),
     CardBook: () => import("../../components/base/CardBook"),
     Modal: () => import("../../components/base/Modal"),
-    ModalBook: () => import("../../components/base/ModalBook")
+    ModalBook: () => import("../../components/base/ModalBook"),
+    Alert: () => import("../../components/base/Alert")
   },
   data: () => ({
     title: "My loans",
     modalStatus: false,
     bookSelected: {},
+    message: "",
+    alertStatus: false,
     books: [
       {
         id: "1",
@@ -46,10 +51,15 @@ export default {
       }
     ]
   }),
+  computed: {
+    ...mapGetters("loans", ["loans"])
+  },
   methods: {
+    ...mapActions("books", ["setData"]),
+    ...mapActions("loans", ["setDataLoan"]),
+    ...mapActions("mybooks", ["setDataMyBooks"]),
     clicked(book) {
       this.modalStatus = true;
-      console.log(book);
       this.bookSelected = book;
     },
     filterListBooks(filters) {
@@ -57,20 +67,40 @@ export default {
     },
     close() {
       this.modalStatus = false;
+    },
+    cancel(book) {
+      const { id } = book;
+      const user_id = null;
+      this.$http
+        .post("http://192.168.0.14:3000/api/v1/loans", {
+          id,
+          user_id
+        })
+        .then(() => {
+          this.setData();
+          this.setDataLoan();
+          this.setDataMyBooks();
+          this.modalStatus = false;
+          this.message = "Successfully canceled";
+          this.alertStatus = true;
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }
   }
 };
 </script>
 
 <style lang="scss" scoped>
-.home {
-  .home__header {
-    .home__list {
+.loans {
+  .loans__header {
+    .loans__list {
       overflow: hidden;
       white-space: nowrap;
     }
   }
-  .home__view {
+  .loans__view {
     width: 100%;
     .view__title {
       color: #676767;

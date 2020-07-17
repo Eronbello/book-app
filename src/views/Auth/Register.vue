@@ -35,7 +35,7 @@ export default {
       };
       try {
         const { data } = await this.$http.post(
-          "http://localhost:3000/api/v1/user",
+          "http://192.168.0.14:3000/api/v1/user",
           body
         );
         if (data) {

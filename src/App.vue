@@ -9,8 +9,13 @@ import { mapActions } from "vuex";
 export default {
   mounted() {
     if (sessionStorage.getItem("token") && sessionStorage.getItem("id")) {
+      this.$http.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${sessionStorage.getItem("token")}`;
+      this.setDataLoan();
       this.setUserByID();
       this.setData();
+      this.setDataMyBooks();
     }
   },
   watch: {
@@ -27,7 +32,9 @@ export default {
   },
   methods: {
     ...mapActions("books", ["setData"]),
-    ...mapActions("user", ["setUserByID"])
+    ...mapActions("user", ["setUserByID"]),
+    ...mapActions("loans", ["setDataLoan"]),
+    ...mapActions("mybooks", ["setDataMyBooks"])
   }
 };
 </script>

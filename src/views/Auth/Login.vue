@@ -1,6 +1,5 @@
 <template lang="pug">
   .login
-    .login__title Bem-vindo á Estante Virtual
     .login__card
       .card__form
         img.card__logo(src="https://cdn3.vectorstock.com/i/1000x1000/60/97/abstract-book-logo-icon-vector-24016097.jpg")
@@ -25,6 +24,9 @@ export default {
   }),
   methods: {
     ...mapActions("user", ["setUserData"]),
+    ...mapActions("books", ["setData"]),
+    ...mapActions("loans", ["setDataLoan"]),
+    ...mapActions("mybooks", ["setDataMyBooks"]),
     async handleAuth() {
       const body = {
         email: this.email,
@@ -32,13 +34,16 @@ export default {
       };
       try {
         const { data } = await this.$http.post(
-          "http://localhost:3000/auth/login",
+          "http://192.168.0.14:3000/auth/login",
           body
         );
         if (data.user) {
           this.setUserData(data.user);
           sessionStorage.setItem("token", data.token);
           sessionStorage.setItem("id", data.user.id);
+          this.setDataLoan();
+          this.setData();
+          this.setDataMyBooks();
           this.$router.push("/");
         }
       } catch (error) {
@@ -58,14 +63,6 @@ export default {
   display: flex;
   justify-content: flex-end;
   position: relative;
-  .login__title {
-    position: absolute;
-    bottom: 2rem;
-    left: 2rem;
-    color: white;
-    font-size: 2rem;
-    font-weight: 300;
-  }
   .login__card {
     width: 500px;
     position: relative;

@@ -1,6 +1,6 @@
 module.exports = {
   globals: {
-    PATH: "http://localhost:8080"
+    PATH: "http://192.168.0.14:8080"
   },
   moduleFileExtensions: ["js", "json", "vue"],
   transform: {

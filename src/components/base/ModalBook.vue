@@ -9,8 +9,7 @@
         .details__author Category: {{ category }}
         .details__description Description: {{ description }}
     .modal__action
-      button.modal__action--borrow(v-if="!userId") Borrow
-      button.modal__action--cancel(v-else) Cancel
+      button.modal__action--borrow(:disabled="!!borrowed_by" @click="$emit('click', {id})") {{ buttonText }}
 </template>
 <script>
 export default {
@@ -39,8 +38,16 @@ export default {
       type: String,
       required: true
     },
-    userId: {
+    buttonText: {
       type: String,
+      required: true
+    },
+    user_id: {
+      type: String,
+      required: false
+    },
+    borrowed_by: {
+      type: Number,
       required: false
     }
   }
@@ -92,15 +99,8 @@ export default {
     justify-content: center;
     align-items: center;
     button {
-      height: 35px;
-      border-radius: 200px;
       width: 100%;
-      color: #40bac4;
-      border: 0;
     }
-  }
-  .modal__action--borrow {
-    background-color: #ecf4f8;
   }
   .modal__action--cancel {
     background-color: #ef6a6a;

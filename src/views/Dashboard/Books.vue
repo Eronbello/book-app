@@ -2,15 +2,16 @@
   .home
     .home__view
       modal(:open="modalStatus" @close="close")
-        modal-book(v-if="modalStatus" :title="bookSelected.title" :id="bookSelected.id" :description="bookSelected.description" :author="bookSelected.author" :background="bookSelected.background" @click="clicked")
+        modal-book(v-if="modalStatus" :borrowed_by="bookSelected.borrowed_by" :title="bookSelected.title" :id="bookSelected.id" :description="bookSelected.description" :author="bookSelected.author" :background="bookSelected.background" @click="cancel" :category="bookSelected.category" buttonText="Cancel")
       h1.view__title  {{ title }}
       .view__content()
-        template(v-for="book in books")
-          card-book(:available="book.available" :title="book.title" :id="book.id" :description="book.description" :author="book.author" :background="book.background" @click="clicked")
+        template(v-for="book in mybooks")
+          card-book(:available="book.available" :borrowed_by="book.borrowed_by" :title="book.title" :id="book.id" :description="book.description" :author="book.author" :background="book.background" :category="book.category  " @click="clicked" buttonText="Details")
 </template>
 
 <script>
 import { dragscroll } from "vue-dragscroll";
+import { mapGetters } from "vuex";
 export default {
   directives: {
     dragscroll
@@ -46,10 +47,12 @@ export default {
       }
     ]
   }),
+  computed: {
+    ...mapGetters("mybooks", ["mybooks"])
+  },
   methods: {
     clicked(book) {
       this.modalStatus = true;
-      console.log(book);
       this.bookSelected = book;
     },
     filterListBooks(filters) {
@@ -57,6 +60,10 @@ export default {
     },
     close() {
       this.modalStatus = false;
+    },
+    cancel(book) {
+      this.modalStatus = false;
+      console.log(book.id);
     }
   }
 };

@@ -2,13 +2,13 @@
   .card-book
     .card_book__content
       .card_book__background(v-bind:style="{ backgroundImage: 'url(' + background + ')' }")
-        .details__borrowed(v-if="!available") Borrowed
+        .details__borrowed(v-if="borrowed_by") Borrowed
       .card_book__details
         .details__name {{ title }}
         .details__author {{ author }}
         .details__author {{ category }}
         .details__description {{ shortDescription }}
-        button.details__button(:disabled="!available" @click="$emit('click', {id, title, author, description, background, category})") Borrow
+        button.details__button(@click="$emit('click', {id, title, author, description, background, category, borrowed_by})") {{ buttonText }}
 </template>
 
 <script>
@@ -38,8 +38,12 @@ export default {
       type: String,
       required: true
     },
-    available: {
-      type: Boolean,
+    buttonText: {
+      type: String,
+      required: true
+    },
+    borrowed_by: {
+      type: Number,
       required: false
     }
   },
