@@ -19,15 +19,16 @@ export default {
   },
   mounted() {
     setTimeout(() => {
-      const element = document.getElementsByClassName("alert");
-      element[0].classList.add("alert--close");
+      this.controlVisibility();
       this.$emit("close");
     }, 2000);
   },
   methods: {
     controlVisibility() {
       const element = document.getElementsByClassName("alert");
-      element[0].classList.add("alert--close");
+      if (element[0]) {
+        element[0].classList.add("alert--close");
+      }
     }
   }
 };
