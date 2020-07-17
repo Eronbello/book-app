@@ -1,17 +1,17 @@
 <template lang="pug">
   .home
-    alert(v-if="alertStatus" :message="message" @close="alertStatus = false")
+    alert(v-if="alertStatus" :message="message" @close="alertStatus = false" :color="color")
     .home__header
       #cards.home__list(v-dragscroll.y="false" v-dragscroll.x="true")
         template(v-for="filter in filters")
-          card(:background="filter.background" title="filter.title" url="filter.url" @click="filterListBooks")
+          card(:background="filter.background" :title="filter.title" :url="filter.url" @click="filterListBooks")
     .home__view
       modal(:open="modalStatus" @close="close")
-        modal-book(v-if="modalStatus" :borrowed_by="bookSelected.borrowed_by" :title="bookSelected.title" :id="bookSelected.id" :description="bookSelected.description" :author="bookSelected.author" :background="bookSelected.background" :category="bookSelected.category" @click="borrow" buttonText="Borrow")
+        modal-book(v-if="modalStatus" :loading="loading" :borrowed_by="bookSelected.borrowed_by" :title="bookSelected.title" :id="bookSelected.id" :description="bookSelected.description" :author="bookSelected.author" :background="bookSelected.background" :category="bookSelected.category" @click="borrow" buttonText="Borrow")
       h1.view__title  {{ title }}
       .view__content()
         template(v-for="book in all")
-          card-book(:available="book.available" :borrowed_by="book.borrowed_by" :title="book.title" :category="book.category" :id="book.id" :description="book.description" :author="book.author" :background="book.background" @click="clicked" :buttonText="book.borrowed_by ? 'Details' : 'Borrow'")
+          card-book(:available="book.available" :borrowed_by="book.borrowed_by" :title="book.title" :category="book.category" :id="book.id" :description="book.description" :author="book.author" :background="book.background" @click="selectBook" :buttonText="book.borrowed_by ? 'Details' : 'Borrow'")
 </template>
 
 <script>
@@ -31,15 +31,17 @@ export default {
   data: () => ({
     title: "Top books",
     modalStatus: false,
+    color: "",
     message: "",
     alertStatus: false,
     bookSelected: {},
+    loading: false,
     filters: [
       {
         background:
           "https://definicao.net/wp-content/uploads/2019/05/roxo-3.jpg",
         title: "Available",
-        url: "api/available"
+        url: "api/v1/available"
       },
       {
         background:
@@ -146,14 +148,16 @@ export default {
     ...mapActions("books", ["setData"]),
     ...mapActions("loans", ["setDataLoan"]),
     ...mapActions("mybooks", ["setDataMyBooks"]),
-    clicked(book) {
-      this.modalStatus = true;
+    selectBook(book) {
       this.bookSelected = book;
+      this.modalStatus = true;
     },
-    filterListBooks(filters) {
-      this.title = filters.title;
+    filterListBooks(filter) {
+      console.log(filter);
+      this.title = filter.title;
     },
     borrow(book) {
+      this.loading = true;
       const { id } = book;
       const user_id = sessionStorage.getItem("id");
       this.$http
@@ -161,17 +165,22 @@ export default {
           id,
           user_id
         })
-        .then(response => {
-          console.log(response);
+        .then(() => {
           this.setData();
           this.setDataLoan();
           this.setDataMyBooks();
+          this.color = "Success";
           this.modalStatus = false;
           this.message = "Successfully added to your library";
           this.alertStatus = true;
+          this.loading = true;
         })
-        .catch(error => {
-          console.log(error);
+        .catch(() => {
+          this.modalStatus = false;
+          this.color = "Error";
+          this.message = "Error adding to your library";
+          this.alertStatus = true;
+          this.loading = true;
         });
     },
     close() {
@@ -196,6 +205,9 @@ export default {
       color: #676767;
       margin: 50px 1rem;
       font-size: 3rem;
+      @media (max-width: 600px) {
+        text-align: center;
+      }
     }
     .view__content {
       display: flex;
