@@ -50,6 +50,8 @@ export default {
   background-color: #fefefe;
   margin: auto;
   position: relative;
+  animation-name: moveToTop;
+  animation-duration: 1s;
   max-width: 600px;
 }
 
@@ -68,5 +70,17 @@ export default {
   color: #000;
   text-decoration: none;
   cursor: pointer;
+}
+
+@keyframes moveToTop {
+  0% {
+    opacity: 0;
+    transform: translateY(-50vh);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 </style>
