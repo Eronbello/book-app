@@ -4,7 +4,7 @@ export default {
   setData: context => {
     return new Promise((resolve, reject) => {
       axios
-        .get("http://192.168.0.14:3000/api/v1/book", {
+        .get("http://192.168.0.14:3000/api/v1/book?page=1", {
           headers: {
             Authorization: sessionStorage.getItem("token")
           }

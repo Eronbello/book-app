@@ -5,7 +5,7 @@ export default {
     return new Promise((resolve, reject) => {
       const id = sessionStorage.getItem("id");
       axios
-        .get(`http://192.168.0.14:3000/api/v1/loans?user_id=${id}`, {
+        .get(`http://192.168.0.14:3000/api/v1/book?page=1&borrowed_by=${id}`, {
           headers: {
             Authorization: sessionStorage.getItem("token")
           }
