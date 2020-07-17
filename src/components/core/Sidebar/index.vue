@@ -15,7 +15,7 @@
           | My books
         router-link(to="/loans" exact-active-class="sidebar__item--active" v-on:click.native="controlMenu").sidebar__item
           i.sidebar__icon.fa.fa-home
-          | My loans
+          | My library
 </template>
 
 <script>
