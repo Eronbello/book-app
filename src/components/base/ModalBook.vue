@@ -9,10 +9,14 @@
         .details__author Category: {{ category }}
         .details__description Description: {{ description }}
     .modal__action
-      button.modal__action--borrow(:disabled="!!borrowed_by" @click="$emit('click', {id})") {{ buttonText }}
+      b-button(:loading="loading" :disabled="!!borrowed_by" @click="$emit('click', {id})") {{ buttonText }}
+      //- button.modal__action--borrow(:disabled="!!borrowed_by" @click="$emit('click', {id})")
 </template>
 <script>
 export default {
+  components: {
+    BButton: () => import("../../components/base/Button")
+  },
   props: {
     id: {
       type: Number,
@@ -29,6 +33,10 @@ export default {
     category: {
       type: String,
       required: true
+    },
+    loading: {
+      type: Boolean,
+      required: false
     },
     description: {
       type: String,
@@ -50,6 +58,9 @@ export default {
       type: Number,
       required: false
     }
+  },
+  mounted() {
+    console.log("teste");
   }
 };
 </script>
