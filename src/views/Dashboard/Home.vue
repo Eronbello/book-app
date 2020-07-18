@@ -47,9 +47,7 @@ export default {
     ...mapGetters("books", ["books"])
   },
   methods: {
-    ...mapActions("books", ["setData", "setDataByCategory", "borrowBook"]),
-    ...mapActions("loans", ["setDataLoan"]),
-    ...mapActions("mybooks", ["setDataMyBooks"]),
+    ...mapActions("books", ["borrowBook", "setDataByCategory"]),
     selectBook(book) {
       this.selectedBook = book;
       this.isModalOpen = true;
@@ -71,9 +69,7 @@ export default {
       const { id } = book;
       this.borrowBook(id)
         .then(() => {
-          this.setData();
-          this.setDataLoan();
-          this.setDataMyBooks();
+          this.refreshStore();
           this.color = "Success";
           this.isModalOpen = false;
           this.title = "Top books";

@@ -16,7 +16,7 @@
 
 <script>
 import { dragscroll } from "vue-dragscroll";
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters } from "vuex";
 export default {
   directives: {
     dragscroll
@@ -44,9 +44,6 @@ export default {
     ...mapGetters("mybooks", ["mybooks"])
   },
   methods: {
-    ...mapActions("books", ["setData"]),
-    ...mapActions("loans", ["setDataLoan"]),
-    ...mapActions("mybooks", ["setDataMyBooks"]),
     clicked(book) {
       this.modalStatus = true;
       this.bookSelected = book;
@@ -73,9 +70,7 @@ export default {
       this.$http
         .post("/api/v1/book", data)
         .then(() => {
-          this.setData();
-          this.setDataLoan();
-          this.setDataMyBooks();
+          this.refreshStore();
           this.modalStatus = false;
           this.color = "Success";
           this.message = "Added successfully";
@@ -98,9 +93,7 @@ export default {
       this.$http
         .delete(`/api/v1/book/${id}`)
         .then(() => {
-          this.setData();
-          this.setDataLoan();
-          this.setDataMyBooks();
+          this.refreshStore();
           this.modalStatus = false;
           this.color = "Success";
           this.message = "Successfully canceled";

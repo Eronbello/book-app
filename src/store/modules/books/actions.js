@@ -6,8 +6,8 @@ export default {
       api
         .get("/api/v1/book?page=1")
         .then(response => {
-          resolve(response.data.data);
           context.commit("setData", response.data.data);
+          resolve(response.data.data);
         })
         .catch(error => {
           reject(error);
