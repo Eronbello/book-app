@@ -71,7 +71,7 @@ export default {
         user_id: user_id
       };
       this.$http
-        .post("http://192.168.0.14:3000/api/v1/book", data)
+        .post("/api/v1/book", data)
         .then(() => {
           this.setData();
           this.setDataLoan();
@@ -96,7 +96,7 @@ export default {
       this.loading = true;
       const { id } = book;
       this.$http
-        .delete(`http://192.168.0.14:3000/api/v1/book/${id}`)
+        .delete(`/api/v1/book/${id}`)
         .then(() => {
           this.setData();
           this.setDataLoan();

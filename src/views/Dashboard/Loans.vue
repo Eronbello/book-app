@@ -55,7 +55,7 @@ export default {
       const { id } = book;
       const user_id = null;
       this.$http
-        .post("http://192.168.0.14:3000/api/v1/loans", {
+        .post("/api/v1/loans", {
           id,
           user_id
         })

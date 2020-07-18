@@ -62,9 +62,6 @@ export default {
       type: Number,
       required: false
     }
-  },
-  mounted() {
-    console.log("teste");
   }
 };
 </script>

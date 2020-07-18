@@ -84,7 +84,6 @@ export default {
         .catch(() => {});
     },
     filterListBooks(filter) {
-      console.log("filter", filter.id);
       this.setDataByCategory(filter.id);
       this.title = filter.title;
     },
@@ -93,7 +92,7 @@ export default {
       const { id } = book;
       const user_id = sessionStorage.getItem("id");
       this.$http
-        .post("http://192.168.0.14:3000/api/v1/loans", {
+        .post("/api/v1/loans", {
           id,
           user_id
         })

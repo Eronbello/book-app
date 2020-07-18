@@ -6,7 +6,6 @@ export default {
       api
         .get(`/api/v1/book?page=1&user_id=${id}`)
         .then(response => {
-          console.log(response.data.data);
           resolve(response.data.data);
           context.commit("setData", response.data.data);
         })
