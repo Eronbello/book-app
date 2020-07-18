@@ -1,0 +1,50 @@
+.input-container {
+  margin-bottom: 20px;
+  padding-top: 10px;
+  position: relative;
+}
+
+input {
+  border: 0;
+  border-bottom: 1px solid #ced4da;
+  outline: none;
+  transition: 0.2s ease-in-out;
+  box-sizing: border-box;
+  font-size: 0.9rem;
+  font-weight: 300;
+  padding-bottom: 0.5rem;
+}
+
+label {
+  top: 15px;
+  left: 0;
+  right: 0;
+  color: #616161;
+  display: flex;
+  align-items: center;
+  font-weight: 400;
+  position: absolute;
+  font-size: 0.8rem;
+  cursor: text;
+  transition: 0.2s ease-in-out;
+  box-sizing: border-box;
+}
+
+input,
+label {
+  width: 100%;
+}
+
+/* Interation */
+input:valid,
+input:focus {
+  border-bottom: 2px solid #26a69a;
+}
+
+input:valid + label,
+input:focus + label {
+  color: #26a69a;
+  font-size: 0.8rem;
+  top: -7px;
+  pointer-events: none;
+}
