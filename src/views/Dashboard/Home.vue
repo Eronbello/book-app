@@ -6,8 +6,8 @@
         template(v-for="filter in filters")
           card(:background="filter.url" :title="filter.title" :id="filter.id" @click="filterListBooks")
     .home__view
-      modal(:open="modalStatus" @close="close")
-        modal-book(v-if="modalStatus" :loading="loading" :borrowed_by="bookSelected.borrowed_by" :title="bookSelected.title" :id="bookSelected.id" :description="bookSelected.description" :author="bookSelected.author" :background="bookSelected.background" :category_id="bookSelected.category_id" :category_title="bookSelected.category_title" @click="borrow" buttonText="Borrow")
+      modal(:open="isModalOpen" @close="isModalOpen = false")
+        modal-book(v-if="isModalOpen" :loading="loading" :borrowed_by="bookSelected.borrowed_by" :title="bookSelected.title" :id="bookSelected.id" :description="bookSelected.description" :author="bookSelected.author" :background="bookSelected.background" :category_id="bookSelected.category_id" :category_title="bookSelected.category_title" @click="borrow" buttonText="Borrow")
       h1.view__title  {{ title }}
       .view__content()
         template(v-for="book in all")
@@ -31,7 +31,7 @@ export default {
   },
   data: () => ({
     title: "Top books",
-    modalStatus: false,
+    isModalOpen: false,
     color: "",
     message: "",
     alertStatus: false,
@@ -68,12 +68,12 @@ export default {
     ...mapGetters("books", ["all"])
   },
   methods: {
-    ...mapActions("books", ["setData", "setDataByCategory"]),
+    ...mapActions("books", ["setData", "setDataByCategory", "borrowBook"]),
     ...mapActions("loans", ["setDataLoan"]),
     ...mapActions("mybooks", ["setDataMyBooks"]),
     selectBook(book) {
       this.bookSelected = book;
-      this.modalStatus = true;
+      this.isModalOpen = true;
     },
     getCategories() {
       this.$http
@@ -90,33 +90,25 @@ export default {
     borrow(book) {
       this.loading = true;
       const { id } = book;
-      const user_id = sessionStorage.getItem("id");
-      this.$http
-        .post("/api/v1/loans", {
-          id,
-          user_id
-        })
+      this.borrowBook(id)
         .then(() => {
           this.setData();
           this.setDataLoan();
           this.setDataMyBooks();
           this.color = "Success";
-          this.modalStatus = false;
+          this.isModalOpen = false;
           this.title = "Top books";
           this.message = "Successfully added to your library";
           this.alertStatus = true;
-          this.loading = true;
+          this.loading = false;
         })
         .catch(() => {
-          this.modalStatus = false;
+          this.isModalOpen = false;
           this.color = "Error";
           this.message = "Error adding to your library";
           this.alertStatus = true;
-          this.loading = true;
+          this.loading = false;
         });
-    },
-    close() {
-      this.modalStatus = false;
     }
   }
 };
