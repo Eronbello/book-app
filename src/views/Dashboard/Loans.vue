@@ -11,12 +11,8 @@
 </template>
 
 <script>
-import { dragscroll } from "vue-dragscroll";
 import { mapGetters } from "vuex";
 export default {
-  directives: {
-    dragscroll
-  },
   components: {
     Card: () => import("../../components/base/Card"),
     CardBook: () => import("../../components/base/CardBook"),
