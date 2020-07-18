@@ -4,7 +4,7 @@
     .home__header
       #cards.home__list(v-dragscroll.y="false" v-dragscroll.x="true")
         template(v-for="filter in filters")
-          card(:background="filter.background" :title="filter.title" :url="filter.url" @click="filterListBooks")
+          card(:background="filter.url" :title="filter.title" :id="filter.id" @click="filterListBooks")
     .home__view
       modal(:open="modalStatus" @close="close")
         modal-book(v-if="modalStatus" :loading="loading" :borrowed_by="bookSelected.borrowed_by" :title="bookSelected.title" :id="bookSelected.id" :description="bookSelected.description" :author="bookSelected.author" :background="bookSelected.background" :category_id="bookSelected.category_id" :category_title="bookSelected.category_title" @click="borrow" buttonText="Borrow")
@@ -37,88 +37,10 @@ export default {
     alertStatus: false,
     bookSelected: {},
     loading: false,
-    filters: [
-      {
-        background:
-          "https://definicao.net/wp-content/uploads/2019/05/roxo-3.jpg",
-        title: "Available",
-        url: "api/v1/available"
-      },
-      {
-        background:
-          "https://definicao.net/wp-content/uploads/2019/05/roxo-3.jpg",
-        title: "Available",
-        url: "api/available"
-      },
-      {
-        background:
-          "https://definicao.net/wp-content/uploads/2019/05/roxo-3.jpg",
-        title: "Available",
-        url: "api/available"
-      },
-      {
-        background:
-          "https://definicao.net/wp-content/uploads/2019/05/roxo-3.jpg",
-        title: "Available",
-        url: "api/available"
-      },
-      {
-        background:
-          "https://definicao.net/wp-content/uploads/2019/05/roxo-3.jpg",
-        title: "Available",
-        url: "api/available"
-      },
-      {
-        background:
-          "https://definicao.net/wp-content/uploads/2019/05/roxo-3.jpg",
-        title: "Available",
-        url: "api/available"
-      },
-      {
-        background:
-          "https://definicao.net/wp-content/uploads/2019/05/roxo-3.jpg",
-        title: "Available",
-        url: "api/available"
-      },
-      {
-        background:
-          "https://definicao.net/wp-content/uploads/2019/05/roxo-3.jpg",
-        title: "Available",
-        url: "api/available"
-      },
-      {
-        background:
-          "https://definicao.net/wp-content/uploads/2019/05/roxo-3.jpg",
-        title: "Available",
-        url: "api/available"
-      },
-      {
-        background:
-          "https://definicao.net/wp-content/uploads/2019/05/roxo-3.jpg",
-        title: "Available",
-        url: "api/available"
-      },
-      {
-        background:
-          "https://definicao.net/wp-content/uploads/2019/05/roxo-3.jpg",
-        title: "Available",
-        url: "api/available"
-      },
-      {
-        background:
-          "https://definicao.net/wp-content/uploads/2019/05/roxo-3.jpg",
-        title: "Available",
-        url: "api/available"
-      },
-      {
-        background:
-          "https://definicao.net/wp-content/uploads/2019/05/roxo-3.jpg",
-        title: "Available",
-        url: "api/available"
-      }
-    ]
+    filters: []
   }),
   mounted() {
+    this.getCategories();
     function scrollHorizontally(e) {
       e = window.event || e;
       var delta = Math.max(-1, Math.min(1, e.wheelDelta || -e.detail));
@@ -146,15 +68,24 @@ export default {
     ...mapGetters("books", ["all"])
   },
   methods: {
-    ...mapActions("books", ["setData"]),
+    ...mapActions("books", ["setData", "setDataByCategory"]),
     ...mapActions("loans", ["setDataLoan"]),
     ...mapActions("mybooks", ["setDataMyBooks"]),
     selectBook(book) {
       this.bookSelected = book;
       this.modalStatus = true;
     },
+    getCategories() {
+      this.$http
+        .get("/api/v1/categories")
+        .then(response => {
+          this.filters = response.data.data;
+        })
+        .catch(() => {});
+    },
     filterListBooks(filter) {
-      console.log(filter);
+      console.log("filter", filter.id);
+      this.setDataByCategory(filter.id);
       this.title = filter.title;
     },
     borrow(book) {
@@ -172,6 +103,7 @@ export default {
           this.setDataMyBooks();
           this.color = "Success";
           this.modalStatus = false;
+          this.title = "Top books";
           this.message = "Successfully added to your library";
           this.alertStatus = true;
           this.loading = true;

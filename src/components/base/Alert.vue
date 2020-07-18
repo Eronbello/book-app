@@ -39,7 +39,7 @@ export default {
   position: absolute;
   z-index: 15;
   top: 0px;
-  width: calc(100vw - 250px);
+  width: 100%;
   padding: 1rem;
   color: white;
   align-items: center;

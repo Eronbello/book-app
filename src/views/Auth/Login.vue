@@ -1,5 +1,6 @@
 <template lang="pug">
   .login
+    alert(v-if="alertStatus" :message="message" @close="alertStatus = false" :color="color")
     .login__card
       .card__form
         img.card__logo(src="https://cdn3.vectorstock.com/i/1000x1000/60/97/abstract-book-logo-icon-vector-24016097.jpg")
@@ -18,9 +19,15 @@
 <script>
 import { mapActions } from "vuex";
 export default {
+  components: {
+    Alert: () => import("../../components/base/Alert")
+  },
   data: () => ({
     email: "",
-    password: ""
+    password: "",
+    alertStatus: false,
+    color: "Error",
+    message: "Dados Inválidos"
   }),
   methods: {
     ...mapActions("user", ["setUserData"]),
@@ -32,23 +39,29 @@ export default {
         email: this.email,
         password: this.password
       };
-      try {
-        const { data } = await this.$http.post("/auth/login", body);
-        if (data.user) {
-          this.setUserData(data.user);
-          sessionStorage.setItem("token", data.token);
-          sessionStorage.setItem("id", data.user.id);
-          this.$http.defaults.headers.common[
-            "Authorization"
-          ] = `Bearer ${sessionStorage.getItem("token")}`;
-          this.setDataLoan();
-          this.setData();
-          this.setDataMyBooks();
-          this.$router.push("/");
-        }
-      } catch (error) {
-        console.log(error);
-      }
+      this.$http
+        .post("/auth/login", body)
+        .then(({ data }) => {
+          if (data.user) {
+            this.setUserData(data.user);
+            sessionStorage.setItem("token", data.token);
+            sessionStorage.setItem("id", data.user.id);
+            this.$http.defaults.headers.common[
+              "Authorization"
+            ] = `Bearer ${sessionStorage.getItem("token")}`;
+            this.setDataLoan();
+            this.setData();
+            this.setDataMyBooks();
+            this.$router.push("/");
+          } else {
+            this.message = data.error;
+            this.alertStatus = true;
+          }
+        })
+        .catch(err => {
+          this.message = err;
+          this.alertStatus = true;
+        });
     }
   }
 };
