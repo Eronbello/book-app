@@ -36,6 +36,12 @@ export default {
   .bar__logout {
     margin-left: 1rem;
     margin-right: 20px;
+    img {
+      width: 2rem;
+      @media (max-width: 700px) {
+        width: 1.5rem;
+      }
+    }
   }
   .bar__name {
     font-size: 1rem;
