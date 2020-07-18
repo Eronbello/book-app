@@ -7,7 +7,7 @@
           card(:background="category.url" :title="category.title" :id="category.id" @click="filterListBooksByCategory")
     .home__view
       modal(:open="isModalOpen" @close="isModalOpen = false")
-        modal-book(v-if="isModalOpen" :Loading="isLoading" :borrowed_by="bookSelected.borrowed_by" :title="bookSelected.title" :id="bookSelected.id" :description="bookSelected.description" :author="bookSelected.author" :background="bookSelected.background" :category_id="bookSelected.category_id" :category_title="bookSelected.category_title" @click="borrow" buttonText="Borrow")
+        modal-book(v-if="isModalOpen" :loading="isLoading" :borrowed_by="bookSelected.borrowed_by" :title="bookSelected.title" :id="bookSelected.id" :description="bookSelected.description" :author="bookSelected.author" :background="bookSelected.background" :category_id="bookSelected.category_id" :category_title="bookSelected.category_title" @click="borrow" buttonText="Borrow")
       h1.view__title  {{ title }}
       .view__content()
         template(v-for="book in books")
