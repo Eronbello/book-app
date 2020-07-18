@@ -1,5 +1,7 @@
 <template lang="pug">
   .bar
+    .bar__logout(@click="logout")
+      img(src="../../../assets/logout.png")
     h1.bar__name {{ name || ''}}
 </template>
 
@@ -11,6 +13,12 @@ export default {
   }),
   computed: {
     ...mapGetters("user", ["name"])
+  },
+  methods: {
+    logout() {
+      sessionStorage.clear();
+      this.$router.push("/login");
+    }
   }
 };
 </script>
@@ -20,9 +28,12 @@ export default {
   height: 65px;
   display: flex;
   flex-direction: row-reverse;
-  justify-content: space-between;
   align-items: center;
   .bar__search {
+    margin-left: 1rem;
+    margin-right: 20px;
+  }
+  .bar__logout {
     margin-left: 1rem;
     margin-right: 20px;
   }
