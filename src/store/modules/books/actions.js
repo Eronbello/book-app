@@ -26,5 +26,21 @@ export default {
           reject(error);
         });
     });
+  },
+  borrowBook: (context, id) => {
+    const user_id = sessionStorage.getItem("id");
+    return new Promise((resolve, reject) => {
+      api
+        .post("/api/v1/loans", {
+          id,
+          user_id
+        })
+        .then(response => {
+          resolve(response.data.data);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
   }
 };

@@ -1,16 +1,16 @@
 <template lang="pug">
   .home
-    alert(v-if="alertStatus" :message="message" @close="alertStatus = false" :color="color")
+    alert(v-if="isAlertOpen" :message="message" @close="isAlertOpen = false" :color="color")
     .home__header
       #cards.home__list(v-dragscroll.y="false" v-dragscroll.x="true")
-        template(v-for="filter in filters")
-          card(:background="filter.url" :title="filter.title" :id="filter.id" @click="filterListBooks")
+        template(v-for="category in categories")
+          card(:background="category.url" :title="category.title" :id="category.id" @click="filterListBooksByCategory")
     .home__view
       modal(:open="isModalOpen" @close="isModalOpen = false")
-        modal-book(v-if="isModalOpen" :loading="loading" :borrowed_by="bookSelected.borrowed_by" :title="bookSelected.title" :id="bookSelected.id" :description="bookSelected.description" :author="bookSelected.author" :background="bookSelected.background" :category_id="bookSelected.category_id" :category_title="bookSelected.category_title" @click="borrow" buttonText="Borrow")
+        modal-book(v-if="isModalOpen" :Loading="isLoading" :borrowed_by="bookSelected.borrowed_by" :title="bookSelected.title" :id="bookSelected.id" :description="bookSelected.description" :author="bookSelected.author" :background="bookSelected.background" :category_id="bookSelected.category_id" :category_title="bookSelected.category_title" @click="borrow" buttonText="Borrow")
       h1.view__title  {{ title }}
       .view__content()
-        template(v-for="book in all")
+        template(v-for="book in books")
           card-book(:available="book.available" :borrowed_by="book.borrowed_by" :title="book.title" :category_id="book.category_id"
           :category_title="book.category_title" :id="book.id" :description="book.description" :author="book.author" :background="book.background" @click="selectBook" :buttonText="book.borrowed_by ? 'Details' : 'Borrow'")
 </template>
@@ -34,10 +34,10 @@ export default {
     isModalOpen: false,
     color: "",
     message: "",
-    alertStatus: false,
+    isAlertOpen: false,
     bookSelected: {},
-    loading: false,
-    filters: []
+    isLoading: false,
+    categories: []
   }),
   mounted() {
     this.getCategories();
@@ -65,7 +65,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters("books", ["all"])
+    ...mapGetters("books", ["books"])
   },
   methods: {
     ...mapActions("books", ["setData", "setDataByCategory", "borrowBook"]),
@@ -79,16 +79,16 @@ export default {
       this.$http
         .get("/api/v1/categories")
         .then(response => {
-          this.filters = response.data.data;
+          this.categories = response.data.data;
         })
         .catch(() => {});
     },
-    filterListBooks(filter) {
-      this.setDataByCategory(filter.id);
-      this.title = filter.title;
+    filterListBooksByCategory(category) {
+      this.setDataByCategory(category.id);
+      this.title = category.title;
     },
     borrow(book) {
-      this.loading = true;
+      this.isLoading = true;
       const { id } = book;
       this.borrowBook(id)
         .then(() => {
@@ -99,15 +99,16 @@ export default {
           this.isModalOpen = false;
           this.title = "Top books";
           this.message = "Successfully added to your library";
-          this.alertStatus = true;
-          this.loading = false;
+          this.isAlertOpen = true;
         })
         .catch(() => {
           this.isModalOpen = false;
           this.color = "Error";
           this.message = "Error adding to your library";
-          this.alertStatus = true;
-          this.loading = false;
+          this.isAlertOpen = true;
+        })
+        .finally(() => {
+          this.isLoading = false;
         });
     }
   }

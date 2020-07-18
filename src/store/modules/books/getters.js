@@ -1,5 +1,5 @@
 export default {
-  all: state => {
+  books: state => {
     return state.data;
   }
 };
