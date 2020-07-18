@@ -1,6 +1,6 @@
 <template lang="pug">
   .register
-    .register__title Bem-vindo a Estante Virtual
+    alert(v-if="alertStatus" :message="message" @close="alertStatus = false" :color="color")
     .register__card
       .card__form
         img.card__logo(src="https://cdn3.vectorstock.com/i/1000x1000/60/97/abstract-book-logo-icon-vector-24016097.jpg")
@@ -14,19 +14,32 @@
         .input-container
           input#password.input(v-model="password" type='password', pattern='.+', required='')
           label.label(for='password') Senha
-        button.form__action(@click="$router.push('/login')") Voltar
-        button.form__action(@click="handleCreateUser") Criar conta
+        b-button.form__action(:loading="loading" @click="handleCreateUser") Create account
+        b-button.form__action(:loading="loading" @click="$router.push('/login')") Back
 </template>
 
 <script>
 export default {
+  components: {
+    Alert: () => import("../../components/base/Alert"),
+    BButton: () => import("../../components/base/Button")
+  },
   data: () => ({
     name: "",
     email: "",
-    password: ""
+    password: "",
+    loading: false,
+    alertStatus: false,
+    color: "Error",
+    message: "Dados Inválidos"
   }),
   methods: {
     async handleCreateUser() {
+      if (!this.name || !this.email || !this.password) {
+        this.alertStatus = true;
+        this.message = "All fields are required";
+        return;
+      }
       const body = {
         name: this.name,
         email: this.email,

@@ -10,24 +10,25 @@
           label.label(for='email') E-mail
         .input-container
           input#password.input(v-model="password" type='password', pattern='.+', required='')
-          label.label(for='password') Senha
-        //- .form__forgot Esqueceu sua senha?
-        button.form__action(@click="handleAuth") Entrar
-        button.form__action(@click="$router.push('/register')") Criar conta
+          label.label(for='password') Password
+        b-button.form__action(:loading="loading"  @click="handleAuth") Login
+        b-button.form__action(@click="$router.push('/register')") Create account
 </template>
 
 <script>
 import { mapActions } from "vuex";
 export default {
   components: {
-    Alert: () => import("../../components/base/Alert")
+    Alert: () => import("../../components/base/Alert"),
+    BButton: () => import("../../components/base/Button")
   },
   data: () => ({
+    loading: false,
     email: "",
     password: "",
     alertStatus: false,
     color: "Error",
-    message: "Dados Inválidos"
+    message: "Invalid email or password"
   }),
   methods: {
     ...mapActions("user", ["setUserData"]),
@@ -35,6 +36,12 @@ export default {
     ...mapActions("loans", ["setDataLoan"]),
     ...mapActions("mybooks", ["setDataMyBooks"]),
     async handleAuth() {
+      if (!this.email || !this.password) {
+        this.alertStatus = true;
+        this.message = "All fields are required";
+        return;
+      }
+      this.loading = true;
       const body = {
         email: this.email,
         password: this.password
@@ -53,9 +60,11 @@ export default {
             this.setData();
             this.setDataMyBooks();
             this.$router.push("/");
+            this.loading = false;
           } else {
             this.message = data.error;
             this.alertStatus = true;
+            this.loading = false;
           }
         })
         .catch(err => {
