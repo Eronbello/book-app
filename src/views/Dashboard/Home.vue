@@ -7,11 +7,12 @@
           card(:background="filter.background" :title="filter.title" :url="filter.url" @click="filterListBooks")
     .home__view
       modal(:open="modalStatus" @close="close")
-        modal-book(v-if="modalStatus" :loading="loading" :borrowed_by="bookSelected.borrowed_by" :title="bookSelected.title" :id="bookSelected.id" :description="bookSelected.description" :author="bookSelected.author" :background="bookSelected.background" :category_id="bookSelected.category_id" @click="borrow" buttonText="Borrow")
+        modal-book(v-if="modalStatus" :loading="loading" :borrowed_by="bookSelected.borrowed_by" :title="bookSelected.title" :id="bookSelected.id" :description="bookSelected.description" :author="bookSelected.author" :background="bookSelected.background" :category_id="bookSelected.category_id" :category_title="bookSelected.category_title" @click="borrow" buttonText="Borrow")
       h1.view__title  {{ title }}
       .view__content()
         template(v-for="book in all")
-          card-book(:available="book.available" :borrowed_by="book.borrowed_by" :title="book.title" :category_id="book.category_id" :id="book.id" :description="book.description" :author="book.author" :background="book.background" @click="selectBook" :buttonText="book.borrowed_by ? 'Details' : 'Borrow'")
+          card-book(:available="book.available" :borrowed_by="book.borrowed_by" :title="book.title" :category_id="book.category_id"
+          :category_title="book.category_title" :id="book.id" :description="book.description" :author="book.author" :background="book.background" @click="selectBook" :buttonText="book.borrowed_by ? 'Details' : 'Borrow'")
 </template>
 
 <script>

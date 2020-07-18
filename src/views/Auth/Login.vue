@@ -33,10 +33,7 @@ export default {
         password: this.password
       };
       try {
-        const { data } = await this.$http.post(
-          "http://192.168.0.14:3000/auth/login",
-          body
-        );
+        const { data } = await this.$http.post("/auth/login", body);
         if (data.user) {
           this.setUserData(data.user);
           sessionStorage.setItem("token", data.token);

@@ -6,7 +6,7 @@
         img(:src="background")
       .content__details
         .details__author Author: {{ author }}
-        .details__author Category: {{ category_id }}
+        .details__author Category: {{ category_title }}
         .details__description Description: {{ description }}
     .modal__action
       b-button(:loading="loading" :disabled="!!borrowed_by" @click="$emit('click', {id})") {{ buttonText }}
@@ -32,6 +32,10 @@ export default {
     },
     category_id: {
       type: Number,
+      required: true
+    },
+    category_title: {
+      type: String,
       required: true
     },
     loading: {

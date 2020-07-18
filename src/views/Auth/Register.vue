@@ -14,7 +14,6 @@
         .input-container
           input#password.input(v-model="password" type='password', pattern='.+', required='')
           label.label(for='password') Senha
-        //- .form__forgot Esqueceu sua senha?
         button.form__action(@click="$router.push('/login')") Voltar
         button.form__action(@click="handleCreateUser") Criar conta
 </template>
@@ -34,10 +33,7 @@ export default {
         password: this.password
       };
       try {
-        const { data } = await this.$http.post(
-          "http://192.168.0.14:3000/api/v1/user",
-          body
-        );
+        const { data } = await this.$http.post("/api/v1/user", body);
         if (data) {
           this.$router.push("/login");
         }

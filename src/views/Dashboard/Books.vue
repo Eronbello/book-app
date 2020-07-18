@@ -4,13 +4,14 @@
     .home__view
       modal(:open="modalStatus" @close="close")
         modal-create-book(:loading="loading" @click="save" v-if="modalStatusCreate")
-        modal-book(v-if="modalStatus && !modalStatusCreate" :loading="loading" :borrowed_by="bookSelected.borrowed_by" :title="bookSelected.title" :id="bookSelected.id" :description="bookSelected.description" :author="bookSelected.author" :background="bookSelected.background" @click="cancel" :category_id="bookSelected.category_id" buttonText="Cancel")
+        modal-book(v-if="modalStatus && !modalStatusCreate" :loading="loading" :borrowed_by="bookSelected.borrowed_by" :title="bookSelected.title" :id="bookSelected.id" :description="bookSelected.description" :author="bookSelected.author" :background="bookSelected.background" @click="cancel" :category_title="bookSelected.category_title" :category_id="bookSelected.category_id" buttonText="Cancel")
       .view__title  
         h1 {{ title }}
         button(@click="modalStatusCreate = true; modalStatus = true") ADD BOOK
       .view__content()
         template(v-for="book in mybooks")
-          card-book(:available="book.available" :borrowed_by="book.borrowed_by" :title="book.title" :id="book.id" :description="book.description" :author="book.author" :background="book.background" :category_id="book.category_id  " @click="clicked" buttonText="Edit")
+          card-book(:available="book.available" :borrowed_by="book.borrowed_by" :title="book.title" :id="book.id" :description="book.description" :author="book.author" :background="book.background" :category_id="book.category_id" 
+          :category_title="book.category_title" @click="clicked" buttonText="Edit")
 </template>
 
 <script>

@@ -3,11 +3,11 @@
     alert(v-if="alertStatus" :message="message" @close="alertStatus = false" :color="color")
     .loans__view
       modal(:open="modalStatus" @close="close")
-        modal-book(v-if="modalStatus" :loading="loading" :title="bookSelected.title" :id="bookSelected.id" :description="bookSelected.description" :author="bookSelected.author" :background="bookSelected.background" :category_id="bookSelected.category_id" @click="cancel" buttonText="Cancel")
+        modal-book(v-if="modalStatus" :loading="loading" :title="bookSelected.title" :id="bookSelected.id" :description="bookSelected.description" :author="bookSelected.author" :background="bookSelected.background" :category_id="bookSelected.category_id" :category_title="bookSelected.category_title" @click="cancel" buttonText="Cancel")
       h1.view__title  {{ title }}
       .view__content()
         template(v-for="book in loans")
-          card-book(:title="book.title" :id="book.id" :description="book.description" :author="book.author" :background="book.background" @click="clicked" :category_id="book.category_id" :borrowed_by="book.borrowed_by" buttonText="Details")
+          card-book(:title="book.title" :id="book.id" :description="book.description" :author="book.author" :background="book.background" @click="clicked" :category_id="book.category_id" :category_title="book.category_title" :borrowed_by="book.borrowed_by" buttonText="Details")
 </template>
 
 <script>
