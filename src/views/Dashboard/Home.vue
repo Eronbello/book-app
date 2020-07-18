@@ -7,7 +7,7 @@
           card(:background="category.url" :title="category.title" :id="category.id" @click="filterListBooksByCategory")
     .home__view
       modal(:open="isModalOpen" @close="isModalOpen = false")
-        modal-book(v-if="isModalOpen" :loading="isLoading" :borrowed_by="bookSelected.borrowed_by" :title="bookSelected.title" :id="bookSelected.id" :description="bookSelected.description" :author="bookSelected.author" :background="bookSelected.background" :category_id="bookSelected.category_id" :category_title="bookSelected.category_title" @click="borrow" buttonText="Borrow")
+        modal-book(v-if="isModalOpen" :loading="isLoading" :borrowed_by="selectedBook.borrowed_by" :title="selectedBook.title" :id="selectedBook.id" :description="selectedBook.description" :author="selectedBook.author" :background="selectedBook.background" :category_id="selectedBook.category_id" :category_title="selectedBook.category_title" @click="borrow" buttonText="Borrow")
       h1.view__title  {{ title }}
       .view__content()
         template(v-for="book in books")
@@ -35,34 +35,13 @@ export default {
     color: "",
     message: "",
     isAlertOpen: false,
-    bookSelected: {},
+    selectedBook: {},
     isLoading: false,
     categories: []
   }),
   mounted() {
     this.getCategories();
-    function scrollHorizontally(e) {
-      e = window.event || e;
-      var delta = Math.max(-1, Math.min(1, e.wheelDelta || -e.detail));
-      document.getElementById("cards").scrollLeft -= delta * 20;
-      e.preventDefault();
-    }
-
-    if (document.getElementById("cards").addEventListener) {
-      // IE9, Chrome, Safari, Opera
-      document
-        .getElementById("cards")
-        .addEventListener("mousewheel", scrollHorizontally, false);
-      // Firefox
-      document
-        .getElementById("cards")
-        .addEventListener("DOMMouseScroll", scrollHorizontally, false);
-    } else {
-      // IE 6/7/8
-      document
-        .getElementById("cards")
-        .attachEvent("onmousewheel", scrollHorizontally);
-    }
+    this.stylingCard();
   },
   computed: {
     ...mapGetters("books", ["books"])
@@ -72,7 +51,7 @@ export default {
     ...mapActions("loans", ["setDataLoan"]),
     ...mapActions("mybooks", ["setDataMyBooks"]),
     selectBook(book) {
-      this.bookSelected = book;
+      this.selectedBook = book;
       this.isModalOpen = true;
     },
     getCategories() {
@@ -110,6 +89,30 @@ export default {
         .finally(() => {
           this.isLoading = false;
         });
+    },
+    stylingCard() {
+      function scrollHorizontally(e) {
+        e = window.event || e;
+        var delta = Math.max(-1, Math.min(1, e.wheelDelta || -e.detail));
+        document.getElementById("cards").scrollLeft -= delta * 20;
+        e.preventDefault();
+      }
+
+      if (document.getElementById("cards").addEventListener) {
+        // IE9, Chrome, Safari, Opera
+        document
+          .getElementById("cards")
+          .addEventListener("mousewheel", scrollHorizontally, false);
+        // Firefox
+        document
+          .getElementById("cards")
+          .addEventListener("DOMMouseScroll", scrollHorizontally, false);
+      } else {
+        // IE 6/7/8
+        document
+          .getElementById("cards")
+          .attachEvent("onmousewheel", scrollHorizontally);
+      }
     }
   }
 };
