@@ -57,7 +57,7 @@ export default {
 
 /* The Close Button */
 .close {
-  color: #aaaaaa;
+  color: white;
   right: 1rem;
   top: 0.3rem;
   position: absolute;
@@ -67,7 +67,7 @@ export default {
 
 .close:hover,
 .close:focus {
-  color: #000;
+  color: #dcdcdc;
   text-decoration: none;
   cursor: pointer;
 }

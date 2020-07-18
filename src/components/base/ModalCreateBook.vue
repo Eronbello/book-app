@@ -13,7 +13,7 @@
           input#author.input(v-model="author" name="author" type='text', pattern='.+', required='')
           label.label(for='author') Author
         .input-container
-          input#category.input(v-model="category" name="category" type='text', pattern='.+', required='')
+          input#category.input(v-model="category_id" name="category" type='text', pattern='.+', required='')
           label.label(for='category') Category
         .input-container
           input#description.input(v-model="description" name="description" type='text', pattern='.+', required='')
@@ -22,7 +22,7 @@
           input#background.input(v-model="background" name="background" type='text', pattern='.+', required='')
           label.label(for='background') Background
     .modal__action
-      b-button(:loading="loading"  @click="$emit('click', {author, title, category, description, background})") Save
+      b-button(:loading="loading"  @click="$emit('click', {author, title, category_id, description, background})") Save
       //- button.modal__action--borrow(:disabled="!!borrowed_by" @click="$emit('click', {id})")
 </template>
 <script>
@@ -33,7 +33,7 @@ export default {
   data: () => ({
     author: "",
     title: "",
-    category: "",
+    category_id: "",
     description: "",
     background: ""
   }),
@@ -54,7 +54,7 @@ export default {
   .modal__title {
     height: 4rem;
     width: 100%;
-    background-color: #febcd9;
+    background-color: #40bac4;
     display: flex;
     justify-content: center;
     align-items: center;

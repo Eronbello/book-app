@@ -6,9 +6,9 @@
       .card_book__details
         .details__name {{ title }}
         .details__author {{ author }}
-        .details__author {{ category }}
+        .details__author {{ category_id }}
         .details__description {{ shortDescription }}
-        button.details__button(@click="$emit('click', {id, title, author, description, background, category, borrowed_by})") {{ buttonText }}
+        button.details__button(@click="$emit('click', {id, title, author, description, background, category_id, borrowed_by})") {{ buttonText }}
 </template>
 
 <script>
@@ -34,8 +34,8 @@ export default {
       type: String,
       required: true
     },
-    category: {
-      type: String,
+    category_id: {
+      type: Number,
       required: true
     },
     buttonText: {
