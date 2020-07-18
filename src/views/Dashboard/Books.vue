@@ -49,7 +49,6 @@ export default {
     ...mapActions("mybooks", ["setDataMyBooks"]),
     clicked(book) {
       this.modalStatus = true;
-      console.log(book);
       this.bookSelected = book;
     },
     filterListBooks(filters) {

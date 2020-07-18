@@ -99,7 +99,7 @@ body {
         content: "";
         width: 50%;
         height: 2px;
-        background: black;
+        background: #40bac4;
         border-radius: 10px;
         position: absolute;
         top: 45%;
@@ -161,7 +161,7 @@ body {
     }
     .sidebar__item--active {
       border-radius: 200px;
-      background-color: #676767;
+      background-color: #40bac4;
       a {
         color: white;
       }
