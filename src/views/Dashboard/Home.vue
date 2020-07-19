@@ -3,8 +3,8 @@
     alert(v-if="isAlertOpen" :message="message" @close="isAlertOpen = false" :color="color")
     .home__header
       #cards.home__list(v-dragscroll.y="false" v-dragscroll.x="true")
-        card(background="https://lthomason.files.wordpress.com/2012/05/i-am-available.jpg" title="Availables" @click="filterAvailables")
-        card(background="https://lthomason.files.wordpress.com/2012/05/i-am-available.jpg" title="Borroweds" @click="filterBorroweds")
+        card(background="https://cdn.shopify.com/s/files/1/1038/1798/products/007-hardcover-inside-book-stationery-mockup-psd-presentation-isometric-free.jpg?v=1525178081" title="Availables" @click="filterAvailables")
+        card(background="https://cdn.shopify.com/s/files/1/1038/1798/products/007-hardcover-inside-book-stationery-mockup-psd-presentation-isometric-free.jpg?v=1525178081" title="Borroweds" @click="filterBorroweds")
         template(v-for="category in categories")
           card(:background="category.url" :title="category.title" :id="category.id" @click="filterListBooksByCategory")
     .home__view
