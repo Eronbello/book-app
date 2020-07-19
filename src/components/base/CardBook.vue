@@ -1,7 +1,7 @@
 <template lang="pug">
   .card-book
     .card_book__content
-      .card_book__background(v-bind:style="{ backgroundImage: 'url(' + background + ')' }")
+      button.card_book__background(@click="$emit('click', {id, title, author, description, background, category_id, borrowed_by, category_title})" v-bind:style="{ backgroundImage: 'url(' + background + ')' }")
         .details__borrowed(v-if="borrowed_by") Borrowed
       .card_book__details
         .details__name {{ title }}
@@ -87,6 +87,9 @@ export default {
         -webkit-box-shadow: 5px 5px 8px 0px rgba(189, 189, 189, 1);
         -moz-box-shadow: 5px 5px 8px 0px rgba(189, 189, 189, 1);
         box-shadow: 5px 10px 8px 0px rgba(189, 189, 189, 1);
+      }
+      &:active {
+        transform: translateY(5px);
       }
       .details__borrowed {
         background-color: #ef6a6a;
