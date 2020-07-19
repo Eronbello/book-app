@@ -2,15 +2,12 @@
   .bar
     .bar__logout(@click="logout")
       img(src="../../../assets/logout.png")
-    h1.bar__name {{ name || ''}}
+    h1.bar__name {{ '' || name }}
 </template>
 
 <script>
 import { mapGetters } from "vuex";
 export default {
-  data: () => ({
-    search: "Procurar livro"
-  }),
   computed: {
     ...mapGetters("user", ["name"])
   },
