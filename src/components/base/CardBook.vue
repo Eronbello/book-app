@@ -97,6 +97,9 @@ export default {
         padding: 1rem;
         text-align: center;
         border-top-left-radius: 1rem;
+        position: absolute;
+        top: 0;
+        width: 100%;
         border-top-right-radius: 1rem;
       }
     }
