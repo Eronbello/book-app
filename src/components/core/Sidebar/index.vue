@@ -143,6 +143,7 @@ body {
     .sidebar__item {
       padding-left: 20px;
       height: 50px;
+      transition: all 0.5s;
       display: flex;
       flex-direction: row;
       width: 80%;
