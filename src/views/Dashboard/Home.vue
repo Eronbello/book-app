@@ -113,31 +113,3 @@ export default {
   }
 };
 </script>
-
-<style lang="scss" scoped>
-.home {
-  height: 100%;
-  .home__header {
-    .home__list {
-      overflow: hidden;
-      white-space: nowrap;
-    }
-  }
-  .home__view {
-    width: 100%;
-    .view__title {
-      color: #676767;
-      margin: 50px 1rem;
-      font-size: 3rem;
-      @media (max-width: 600px) {
-        text-align: center;
-      }
-    }
-    .view__content {
-      display: flex;
-      flex-wrap: wrap;
-      flex-direction: row;
-    }
-  }
-}
-</style>

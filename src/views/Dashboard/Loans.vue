@@ -1,7 +1,7 @@
 <template lang="pug">
-  .loans
+  .home
     alert(v-if="alertStatus" :message="message" @close="alertStatus = false" :color="color")
-    .loans__view
+    .home__view
       modal(:open="modalStatus" @close="close")
         modal-book(v-if="modalStatus" :loading="loading" :title="bookSelected.title" :id="bookSelected.id" :description="bookSelected.description" :author="bookSelected.author" :background="bookSelected.background" :category_id="bookSelected.category_id" :category_title="bookSelected.category_title" @click="cancel" buttonText="Cancel")
       h1.view__title  {{ title }}
@@ -71,30 +71,3 @@ export default {
   }
 };
 </script>
-
-<style lang="scss" scoped>
-.loans {
-  .loans__header {
-    .loans__list {
-      overflow: hidden;
-      white-space: nowrap;
-    }
-  }
-  .loans__view {
-    width: 100%;
-    .view__title {
-      color: #676767;
-      margin: 1rem 1rem;
-      font-size: 3rem;
-      @media (max-width: 600px) {
-        text-align: center;
-      }
-    }
-    .view__content {
-      display: flex;
-      flex-wrap: wrap;
-      flex-direction: row;
-    }
-  }
-}
-</style>
