@@ -14,7 +14,7 @@ export default {
     },
     message: {
       type: String,
-      default: "sadsad"
+      default: ""
     },
     closeAutomatically: {
       type: Boolean,
