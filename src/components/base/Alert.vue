@@ -43,7 +43,7 @@ export default {
 <style lang="scss" scoped>
 /* The alert message box */
 .alert {
-  position: absolute;
+  position: fixed;
   z-index: 15;
   top: 0px;
   width: 100%;
