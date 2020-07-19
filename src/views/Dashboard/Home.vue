@@ -3,6 +3,8 @@
     alert(v-if="isAlertOpen" :message="message" @close="isAlertOpen = false" :color="color")
     .home__header
       #cards.home__list(v-dragscroll.y="false" v-dragscroll.x="true")
+        card(background="https://lthomason.files.wordpress.com/2012/05/i-am-available.jpg" title="Availables" @click="filterAvailables")
+        card(background="https://lthomason.files.wordpress.com/2012/05/i-am-available.jpg" title="Borroweds" @click="filterBorroweds")
         template(v-for="category in categories")
           card(:background="category.url" :title="category.title" :id="category.id" @click="filterListBooksByCategory")
     .home__view
@@ -42,22 +44,35 @@ export default {
   mounted() {
     this.getCategories();
     this.stylingCard();
-    this.setData();
   },
   computed: {
     ...mapGetters("books", ["books"])
   },
   methods: {
-    ...mapActions("books", ["borrowBook", "setDataByCategory", "setData"]),
+    ...mapActions("books", [
+      "borrowBook",
+      "setDataByCategory",
+      "setData",
+      "setDataAvailables",
+      "setDataBorroweds"
+    ]),
     selectBook(book) {
       this.selectedBook = book;
       this.isModalOpen = true;
+    },
+    filterAvailables() {
+      this.title = "Availables";
+      this.setDataAvailables();
+    },
+    filterBorroweds() {
+      this.title = "Borroweds";
+      this.setDataBorroweds();
     },
     getCategories() {
       this.$http
         .get("/api/v1/categories")
         .then(response => {
-          this.categories = response.data.data;
+          this.categories = [...this.categories, ...response.data.data];
         })
         .catch(() => {});
     },
