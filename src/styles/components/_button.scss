@@ -9,6 +9,7 @@ button {
   &:disabled {
     color: white;
     background-color: #dcdcdc;
+    cursor: default;
   }
   &:active, &:focus{
     outline: none;
