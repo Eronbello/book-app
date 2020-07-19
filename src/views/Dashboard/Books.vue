@@ -15,7 +15,8 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import isValid from "../../utils/validateBook";
+import { mapGetters, mapActions } from "vuex";
 export default {
   components: {
     Card: () => import("../../components/base/Card"),
@@ -40,6 +41,7 @@ export default {
     ...mapGetters("mybooks", ["mybooks"])
   },
   methods: {
+    ...mapActions("mybooks", ["createBook", "deleteBook"]),
     clicked(book) {
       this.modalStatus = true;
       this.bookSelected = book;
@@ -63,8 +65,14 @@ export default {
         available: false,
         user_id: user_id
       };
-      this.$http
-        .post("/api/v1/book", data)
+      if (!isValid(book)) {
+        this.loading = false;
+        this.color = "Error";
+        this.message = "All fields are required";
+        this.alertStatus = true;
+        return;
+      }
+      this.createBook(data)
         .then(() => {
           this.refreshStore();
           this.modalStatus = false;
@@ -76,18 +84,17 @@ export default {
         })
         .catch(() => {
           this.loading = false;
-          this.modalStatus = false;
           this.color = "Error";
           this.message = "Error adding";
           this.alertStatus = true;
+          this.modalStatus = false;
           this.modalStatusCreate = false;
         });
     },
     cancel(book) {
       this.loading = true;
       const { id } = book;
-      this.$http
-        .delete(`/api/v1/book/${id}`)
+      this.deleteBook(id)
         .then(() => {
           this.refreshStore();
           this.modalStatus = false;

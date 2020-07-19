@@ -23,7 +23,6 @@
           label.label(for='background') Background
     .modal__action
       b-button(:loading="loading"  @click="$emit('click', {author, title, category_id, description, background})") Save
-      //- button.modal__action--borrow(:disabled="!!borrowed_by" @click="$emit('click', {id})")
 </template>
 <script>
 export default {
@@ -66,6 +65,14 @@ export default {
     width: 100%;
     display: flex;
     flex-direction: row;
+    @media (max-width: 600px) {
+      .content__image {
+        display: none;
+      }
+      .content__details {
+        width: 100% !important;
+      }
+    }
     .content__image {
       width: 30%;
       height: 100%;

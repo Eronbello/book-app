@@ -71,3 +71,9 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+.view__title {
+  font-size: 3rem;
+}
+</style>

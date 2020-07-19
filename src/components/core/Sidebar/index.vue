@@ -2,7 +2,7 @@
   .sidebar
     nav.menu(tabindex='0' @focusout="close")
       .smartphone-menu-trigger(@click="controlMenu")
-      h1.sidebar__title Bookz
+      h1.sidebar__title Books
       h2.sidebar__sub-title DISCOVER
       ul.sidebar__list
         router-link(to="/" exact-active-class="sidebar__item--active" v-on:click.native="controlMenu").sidebar__item
