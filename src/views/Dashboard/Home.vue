@@ -42,12 +42,13 @@ export default {
   mounted() {
     this.getCategories();
     this.stylingCard();
+    this.setData();
   },
   computed: {
     ...mapGetters("books", ["books"])
   },
   methods: {
-    ...mapActions("books", ["borrowBook", "setDataByCategory"]),
+    ...mapActions("books", ["borrowBook", "setDataByCategory", "setData"]),
     selectBook(book) {
       this.selectedBook = book;
       this.isModalOpen = true;
@@ -109,6 +110,11 @@ export default {
           .getElementById("cards")
           .attachEvent("onmousewheel", scrollHorizontally);
       }
+    }
+  },
+  beforeDestroy() {
+    if (this.title !== "Top books") {
+      this.setData();
     }
   }
 };
