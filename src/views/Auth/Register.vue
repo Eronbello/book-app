@@ -10,7 +10,7 @@
         b-input(v-model="email" type="text" id="email" label="E-mail")
         b-input(v-model="password" type="password" id="password" label="Password")
         b-button.form__action(:loading="loading" @click="handleCreateUser") Create account
-        b-button.form__action(:loading="loading" @click="$router.push('/login')") Back
+        b-button.form__action(@click="$router.push('/login')") Back
 </template>
 
 <script>
@@ -37,6 +37,7 @@ export default {
         this.message = "All fields are required";
         return;
       }
+      this.loading = true;
       const body = {
         name: this.name,
         email: this.email,
@@ -44,11 +45,14 @@ export default {
       };
       try {
         const { data } = await this.$http.post("/api/v1/user", body);
+        this.loading = false;
         if (data) {
           this.$router.push("/login");
         }
       } catch (error) {
-        console.log(error);
+        this.alertStatus = true;
+        this.message = "error";
+        this.loading = false;
       }
     }
   }

@@ -1,8 +1,7 @@
 <template lang="pug">
   .bar
-    button.bar__logout(@click="logout")
+    button(@click="logout").bar__logout
       img(src="../../../assets/turn-off.png")
-      //- | Logout
     h1.bar__name {{ '' || name }}
 </template>
 
@@ -36,9 +35,10 @@ export default {
     margin-right: 20px;
     width: 3rem;
     height: 3rem;
+    background-color: white;
     border-radius: 200px;
     img {
-      height: 2rem;
+      height: 1.5rem;
     }
   }
   .bar__name {
