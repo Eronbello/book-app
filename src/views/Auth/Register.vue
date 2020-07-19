@@ -3,7 +3,7 @@
     alert(v-if="alertStatus" :message="message" @close="alertStatus = false" :color="color")
     .register__card
       .card__form
-        img.card__logo(src="https://cdn3.vectorstock.com/i/1000x1000/60/97/abstract-book-logo-icon-vector-24016097.jpg")
+        img.card__logo(:src="logo")
         h4 Register
         .input-container
         b-input(v-model="name" type="text" id="name" label="Name")
@@ -21,6 +21,7 @@ export default {
     BInput: () => import("../../components/base/Input")
   },
   data: () => ({
+    logo: require("../../assets/logo-login.png"),
     name: "",
     email: "",
     password: "",

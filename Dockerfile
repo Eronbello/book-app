@@ -12,8 +12,6 @@ COPY package.json $APP/
 RUN apk add --no-cache git
 RUN npm install
 
-# Declaring folders as volume improves performance
-# for file intensive operations, like SASS compilation
 
 CMD ["npm", "run", "serve"]
 

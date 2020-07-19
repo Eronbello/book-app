@@ -3,7 +3,7 @@
     alert(v-if="alertStatus" :message="message" @close="alertStatus = false" :color="color")
     .login__card
       .card__form
-        img.card__logo(src="https://cdn3.vectorstock.com/i/1000x1000/60/97/abstract-book-logo-icon-vector-24016097.jpg")
+        img.card__logo(:src="logo")
         h4 Login
         b-input(v-model="email" type="text" id="email" label="E-mail")
         b-input(v-model="password" type="password" id="password" label="Password")
@@ -20,6 +20,7 @@ export default {
     BInput: () => import("../../components/base/Input")
   },
   data: () => ({
+    logo: require("../../assets/logo-login.png"),
     loading: false,
     email: "",
     password: "",
@@ -67,6 +68,7 @@ export default {
         .catch(err => {
           this.message = err;
           this.alertStatus = true;
+          this.loading = false;
         });
     }
   }
