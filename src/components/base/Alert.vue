@@ -15,12 +15,19 @@ export default {
     message: {
       type: String,
       default: "sadsad"
+    },
+    closeAutomatically: {
+      type: Boolean,
+      default: true,
+      required: false
     }
   },
   mounted() {
     setTimeout(() => {
-      this.controlVisibility();
-      this.$emit("close");
+      if (this.closeAutomatically) {
+        this.controlVisibility();
+        this.$emit("close");
+      }
     }, 2000);
   },
   methods: {

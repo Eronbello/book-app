@@ -1,14 +1,35 @@
-import Vue from "vue";
+import { action } from "@storybook/addon-actions";
+// import { linkTo } from "@storybook/addon-links";
 
-import MyButton from "../components/base/Button";
+import MyButton from "../components/MyButton.vue";
 
-export default { title: "Button" };
+export default {
+  component: MyButton,
+  title: "Button"
+};
 
-export const withText = () => "<my-button>with text</my-button>";
-
-export const withEmoji = () => "<my-button>😀 😎 👍 💯</my-button>";
-
-export const asAComponent = () => ({
+export const withText = () => ({
   components: { MyButton },
-  template: '<my-button :rounded="true">rounded</my-button>'
+  template: '<my-button @click="action">Hello Button</my-button>',
+  methods: { action: action("clicked") },
+  props: {
+    color: {
+      type: String,
+      default: "Success"
+    },
+    message: {
+      type: String,
+      default: "sadsad"
+    },
+    closeAutomatically: {
+      type: Boolean,
+      default: true,
+      required: false
+    }
+  }
+});
+
+export const withSomeEmoji = () => ({
+  components: { MyButton },
+  template: "<my-button>😀 😎 👍 💯</my-button>"
 });
