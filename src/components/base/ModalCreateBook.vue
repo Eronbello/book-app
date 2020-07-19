@@ -6,40 +6,46 @@
         h4 Preview
         img(:src="background")
       .content__details
-        .input-container
-          input#title.input(v-model="title" name="title" type='text', pattern='.+', required='')
-          label.label(for='title') Title
-        .input-container
-          input#author.input(v-model="author" name="author" type='text', pattern='.+', required='')
-          label.label(for='author') Author
-        .input-container
-          input#category.input(v-model="category_id" name="category" type='text', pattern='.+', required='')
-          label.label(for='category') Category
-        .input-container
-          input#description.input(v-model="description" name="description" type='text', pattern='.+', required='')
-          label.label(for='description') Description
-        .input-container
-          input#background.input(v-model="background" name="background" type='text', pattern='.+', required='')
-          label.label(for='background') Background
+        b-input(v-model="title" type="text" id="name" label="Title")
+        b-input(v-model="author" type="text" id="author" label="Author")
+        b-input(v-model="description" type="text" id="description" label="Description")
+        b-input(v-model="background" type="text" id="background" label="Background")
+        b-select(v-model="category_id" :options="categories")
     .modal__action
       b-button(:loading="loading"  @click="$emit('click', {author, title, category_id, description, background})") Save
 </template>
 <script>
 export default {
   components: {
-    BButton: () => import("../../components/base/Button")
+    BButton: () => import("../../components/base/Button"),
+    BInput: () => import("../../components/base/Input"),
+    BSelect: () => import("../../components/base/Select")
   },
   data: () => ({
     author: "",
     title: "",
     category_id: "",
     description: "",
+    categories: [],
     background: ""
   }),
   props: {
     loading: {
       type: Boolean,
       required: false
+    }
+  },
+  mounted() {
+    this.getCategories();
+  },
+  methods: {
+    getCategories() {
+      this.$http
+        .get("/api/v1/categories")
+        .then(response => {
+          this.categories = response.data.data;
+        })
+        .catch(() => {});
     }
   }
 };

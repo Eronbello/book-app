@@ -6,14 +6,9 @@
         img.card__logo(src="https://cdn3.vectorstock.com/i/1000x1000/60/97/abstract-book-logo-icon-vector-24016097.jpg")
         h4 Register
         .input-container
-          input#name.input(v-model="name" type='name', pattern='.+', required='')
-          label.label(for='name') Nome
-        .input-container
-          input#email.input(v-model="email" name="email" type='text', pattern='.+', required='')
-          label.label(for='email') E-mail
-        .input-container
-          input#password.input(v-model="password" type='password', pattern='.+', required='')
-          label.label(for='password') Senha
+        b-input(v-model="name" type="text" id="name" label="Name")
+        b-input(v-model="email" type="text" id="email" label="E-mail")
+        b-input(v-model="password" type="password" id="password" label="Password")
         b-button.form__action(:loading="loading" @click="handleCreateUser") Create account
         b-button.form__action(:loading="loading" @click="$router.push('/login')") Back
 </template>
@@ -22,7 +17,8 @@
 export default {
   components: {
     Alert: () => import("../../components/base/Alert"),
-    BButton: () => import("../../components/base/Button")
+    BButton: () => import("../../components/base/Button"),
+    BInput: () => import("../../components/base/Input")
   },
   data: () => ({
     name: "",
