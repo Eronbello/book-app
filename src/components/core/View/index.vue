@@ -1,6 +1,5 @@
 <template lang="pug">
   .view
-    //- transition(name="fade" mode="out-in")
     router-view
 </template>
 
@@ -14,21 +13,5 @@
     margin-left: 0;
     width: calc(100vw);
   }
-}
-.router-link-active {
-  color: red;
-}
-
-.fade-enter {
-  opacity: 0;
-}
-
-.fade-enter-active {
-  transition: opacity 0.3s ease;
-}
-
-.fade-leave-active {
-  transition: opacity 0.3 ease;
-  opacity: 0;
 }
 </style>
