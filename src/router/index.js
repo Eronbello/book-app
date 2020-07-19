@@ -16,11 +16,10 @@ const routes = [
   },
   {
     path: "/",
-    name: "Dashboard",
     component: () => import("../views/Dashboard/"),
     children: [
       {
-        name: "My books",
+        name: "Home",
         path: "/",
         component: () => import("../views/Dashboard/Home")
       },
