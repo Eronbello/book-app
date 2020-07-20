@@ -5,8 +5,7 @@
 <p align="center">
   <a href="#rocket-technologies">Technologies</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#information_source-how-to-use">How To Use</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="#black_square_button-architecture">Architecture</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="#black_square_button-CI/CD">CI/CD</a>&nbsp;&nbsp;&nbsp;
+  <a href="#black_square_button-architecture">Architecture</a>&nbsp;&nbsp;&nbsp;
 </p>
 
 ## :rocket: Technologies
@@ -23,7 +22,7 @@ This project was developed for a test with the following technologies:
 - [jest](https://jestjs.io/)
 - [pug](https://pugjs.org/api/getting-started.html)
 - [sass](https://sass-lang.com/)
-- [vuese](https://github.com/vuese/vuese))
+- [vuese](https://github.com/vuese/vuese)
 - [prettier](https://prettier.io/)
 - [eslint](https://eslint.org/)
 - [fortawesome](https://fontawesome.com/6?next=%2F)
@@ -31,7 +30,7 @@ This project was developed for a test with the following technologies:
 
 ## :information_source: How To Use
 
-To clone and run this application, you'll need [Git](https://git-scm.com) and [Docker and Docker Compose](https://docs.docker.com/compose/install/) on your computer. From your command line:
+To clone and run this application, you'll need [Git](https://git-scm.com), [Node](https://docs.docker.com/compose/install/) and [NPM](https://www.npmjs.com/) on your computer. From your command line:
 
 ```bash
 # Clone this repository
@@ -40,8 +39,11 @@ $ git clone https://github.com/Eronbello/book-app.git
 # Go into the repository
 $ cd book-app
 
+# install dependencies
+$ npm install
+
 # You can see the app running at: http://localhost:8080
-$ docker-compose up
+$ npm run serve
 ```
 ## :information_source: Tests
 
@@ -55,7 +57,6 @@ $ npm run test
 
 Build by [Vuese](https://github.com/vuese/vuese)
 ```bash
-# vuese server running at: http://localhost:5000
 $ npm run vuese
 ```
 
