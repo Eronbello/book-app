@@ -8,6 +8,10 @@
   <a href="#black_square_button-architecture">Architecture</a>&nbsp;&nbsp;&nbsp;
 </p>
 
+## :rocket: Preview
+
+preview: https://virtual-bookcase-app.herokuapp.com/
+
 ## :rocket: Technologies
 
 This project was developed for a test with the following technologies:
