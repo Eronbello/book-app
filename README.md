@@ -43,7 +43,7 @@ $ cd book-app
 # You can see the app running at: http://localhost:8080
 $ docker-compose up
 ```
-## :information_tests: Tests
+## :information_source: Tests
 
 To run the application tests, follow these steps:
 
@@ -51,7 +51,7 @@ To run the application tests, follow these steps:
 $ npm run test
 ```
 
-## :information_tests: Documentation
+## :information_source: Documentation
 
 Build by [Vuese](https://github.com/vuese/vuese)
 ```bash
