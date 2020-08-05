@@ -1,5 +1,4 @@
 <h1 align="center">
-    Herospark Challenge Front-end
 </h1>
 
 <p align="center">
